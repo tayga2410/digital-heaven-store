@@ -2,11 +2,16 @@
   "devDependencies": {
     "concurrently": "^9.1.0"
   },
-
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "cd server && npm start",
     "client": "cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
+    "cors": "^2.8.5",
+    "react-redux": "^9.2.0",
+    "redux-persist": "^6.0.0",
+    "sass": "^1.83.0"
   }
-  
 }
