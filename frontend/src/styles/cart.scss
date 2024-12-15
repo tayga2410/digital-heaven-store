@@ -1,0 +1,99 @@
+.cart {
+  padding: 112px 160px;
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-bottom: 40px;
+  }
+
+  &__container {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+  }
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__item-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    padding: 16px 0 32px;
+    border-bottom: 0.5px solid #a3a3a3;
+  }
+
+  &__item-description {
+    display: flex;
+    align-items: center;
+  }
+
+  &__item-title {
+    max-width: 191px;
+  }
+
+  &__item-price {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 32px;
+    letter-spacing: 0.03em;
+  }
+
+  &__item-quantity {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 16px;
+    text-align: center;
+    padding: 8px 16px;
+    border: 0.5px solid #d9d9d9;
+    border-radius: 4px;
+  }
+
+  &__summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 56px 64px;
+    gap: 40px;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 16px;
+    gap: 8px;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 16px;
+    border: 0.5px solid #9f9f9f;
+    border-radius: 7px;
+  }
+
+  &__total-amount {
+    width: 100%;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0.03em;
+  }
+
+  &__checkout-button {
+    min-height: 56px;
+    background-color: #000000;
+    color: #ffffff;
+    border-radius: 6px;
+  }
+}

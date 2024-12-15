@@ -13,16 +13,16 @@ export default function Nav() {
       </div>
       <ul className={`nav__list ${isOpen ? 'nav__list--active' : ''}`}>
         <li className="nav__item">
-          <Link href="/">Home</Link>
+          <Link href="/">На главную</Link>
         </li>
         <li className="nav__item">
-          <Link href="/catalog">Catalog</Link>
+          <Link href="/catalog">Каталог</Link>
         </li>
         <li className="nav__item">
-          <Link href="/">Contact Us</Link>
+          <Link href="/">Контакты</Link>
         </li>
         <li className="nav__item">
-          <Link href="/">Blog</Link>
+          <Link href="/">Блог</Link>
         </li>
       </ul>
     </nav>
