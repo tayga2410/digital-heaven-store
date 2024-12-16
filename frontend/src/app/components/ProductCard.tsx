@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { addItem } from '@/store/slices/cartSlice';
 
 
-const ProductCard: React.FC<Product> = ({ id, name, price, img}) => {
+const ProductCard: React.FC<Product> = ({ id, name, price, img }) => {
     const dispatch = useDispatch();
 
     const handleAddToCart = () => {

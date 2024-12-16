@@ -22,11 +22,13 @@ export default function Login() {
         body: JSON.stringify({ email, password }),
       });
 
+
       if (!response.ok) {
         throw new Error('Failed to login');
       }
 
       const data = await response.json();
+      localStorage.setItem('token', data.token);
       dispatch(authSuccess({ user: data.user, token: data.token }));
 
       if (data.user.role === 'user') {

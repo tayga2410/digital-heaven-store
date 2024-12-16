@@ -1,0 +1,53 @@
+.dashboard__tabs {
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard__tabs button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #ddd;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &.active {
+    background: #0070f3;
+    color: white;
+  }
+}
+
+.dashboard__content {
+  margin-top: 1rem;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+  }
+
+  button {
+    margin-right: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border: none;
+    cursor: pointer;
+
+    &:first-of-type {
+      background: #0070f3;
+      color: white;
+    }
+
+    &:last-of-type {
+      background: #ff4d4f;
+      color: white;
+    }
+  }
+}

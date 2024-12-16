@@ -5,8 +5,14 @@ declare global {
       id: string;
       name: string;
       price: number;
-      img: string;
-      category?: string;
+      img?: string | File;
+      categoryId: string | null;
+    }
+
+    interface Category {
+      id: string;
+      name: string;
+      img?: string | File; 
     }
   }
   

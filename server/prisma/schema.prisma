@@ -14,10 +14,26 @@ datasource db {
 }
 
 model Product {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  price          Float
-  img            String
-  category       String
-  createdAt      DateTime @default(now())
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  price      Float
+  img        String
+  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  createdAt  DateTime @default(now())
+  categoryId String?  @db.ObjectId
+}
+
+model Category {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  img     String?
+  Product Product[]
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
 }

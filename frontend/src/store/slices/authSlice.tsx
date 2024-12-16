@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface User {
   id: string;
   email: string;
-  role: 'superadmin' | 'editor' | 'user'; // Роли
+  role: string;
 }
 
 interface AuthState {
@@ -35,6 +35,7 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
+      localStorage.setItem('token', action.payload.token);
     },
     authFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -44,9 +45,15 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      localStorage.removeItem('token');
+    },
+    restoreSession(state, action: PayloadAction<{ user: User; token: string }>) {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isAuthenticated = true;
     },
   },
 });
 
-export const { authStart, authSuccess, authFailure, logout } = authSlice.actions;
+export const { authStart, authSuccess, authFailure, logout, restoreSession } = authSlice.actions;
 export default authSlice.reducer;

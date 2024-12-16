@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import '../styles/main.scss';
 import Header from './components/Header';
 import ReduxProvider from './components/ReduxProvider';
+import SessionLoader from './components/Auth/SessionLoader';
 
 export const metadata = {
   title: 'Digital Heaven Store',
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ReduxProvider>
+        <SessionLoader />
           <Header />
           <main>{children}</main>
         </ReduxProvider>
