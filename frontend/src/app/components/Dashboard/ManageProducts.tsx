@@ -5,20 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { addProduct, updateProduct, deleteProduct, setProducts } from '@/store/slices/productsSlice';
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  img?: string | File;
-  categoryId: string | null; 
-}
-
-interface Category {
-  id: string;
-  name: string;
-  img?: string;
-}
-
 export default function ManageProducts() {
   const products = useSelector((state: RootState) => state.products.products);
   const dispatch = useDispatch();
@@ -27,13 +13,15 @@ export default function ManageProducts() {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [specifications, setSpecifications] = useState<Record<string, string | number>>({});
 
   useEffect(() => {
     async function fetchProducts() {
       try {
+        const token = localStorage.getItem('token');
         const res = await fetch('http://localhost:4000/api/products', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -56,9 +44,10 @@ export default function ManageProducts() {
   useEffect(() => {
     async function fetchCategories() {
       try {
+        const token = localStorage.getItem('token');
         const res = await fetch('http://localhost:4000/api/categories', {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -77,17 +66,25 @@ export default function ManageProducts() {
   }, []);
 
   const openModal = (product?: Product) => {
+    let specs: Record<string, string | number> = {};
+
+    if (product) {
+      specs = product.specs || {};
+    } else if (categories[0]?.specSchema) {
+      specs = { ...categories[0].specSchema };
+    }
+
     setEditingProduct(
-      product
-        ? { ...product, categoryId: product.categoryId || categories[0]?.id || null }
-        : { id: '', name: '', price: 0, categoryId: categories[0]?.id || null }
+      product || { id: '', name: '', price: 0, categoryId: categories[0]?.id || null, brandName: '', img: '' }
     );
+    setSpecifications(specs);
     setModalVisible(true);
   };
 
   const closeModal = () => {
     setEditingProduct(null);
     setModalVisible(false);
+    setSpecifications({});
   };
 
   const handleSave = async () => {
@@ -101,17 +98,23 @@ export default function ManageProducts() {
     try {
       const formData = new FormData();
       formData.append('name', editingProduct.name);
-      formData.append('categoryId', editingProduct.categoryId);
       formData.append('price', editingProduct.price.toString());
-
+      formData.append('categoryId', editingProduct.categoryId);
+      formData.append('specifications', JSON.stringify(specifications));
+      if (editingProduct.brandName) {
+        formData.append('brandName', editingProduct.brandName);
+      }
       if (editingProduct.img instanceof File) {
         formData.append('img', editingProduct.img);
       }
 
-      const method = editingProduct.id ? 'PUT' : 'POST';
-      const url = editingProduct.id
-        ? `http://localhost:4000/api/products/${editingProduct.id}`
-        : `http://localhost:4000/api/products`;
+      let url = 'http://localhost:4000/api/products';
+      let method: 'POST' | 'PUT' = 'POST';
+
+      if (editingProduct.id) {
+        url = `http://localhost:4000/api/products/${editingProduct.id}`;
+        method = 'PUT';
+      }
 
       const res = await fetch(url, {
         method,
@@ -120,10 +123,10 @@ export default function ManageProducts() {
 
       if (res.ok) {
         const savedProduct = await res.json();
-        if (editingProduct.id) {
-          dispatch(updateProduct(savedProduct));
-        } else {
+        if (method === 'POST') {
           dispatch(addProduct(savedProduct));
+        } else {
+          dispatch(updateProduct(savedProduct));
         }
         closeModal();
       } else {
@@ -136,10 +139,11 @@ export default function ManageProducts() {
 
   const handleDelete = async (productId: string) => {
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(`http://localhost:4000/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -152,6 +156,8 @@ export default function ManageProducts() {
       console.error('Error deleting product:', error);
     }
   };
+
+  const selectedCategory = editingProduct && categories.find((cat) => cat.id === editingProduct.categoryId);
 
   return (
     <div className="manage-products">
@@ -166,6 +172,7 @@ export default function ManageProducts() {
               <th>Изображение</th>
               <th>Наименование</th>
               <th>Категория</th>
+              <th>Бренд</th>
               <th>Цена</th>
               <th>Действия</th>
             </tr>
@@ -184,6 +191,7 @@ export default function ManageProducts() {
                 <td>
                   {categories.find((cat) => cat.id === product.categoryId)?.name || 'Неизвестная категория'}
                 </td>
+                <td>{product.brandName}</td>
                 <td>${product.price.toFixed(2)}</td>
                 <td>
                   <button onClick={() => openModal(product)}>Редактировать</button>
@@ -225,6 +233,16 @@ export default function ManageProducts() {
               </select>
             </label>
             <label>
+              Бренд:
+              <input
+                type="text"
+                value={editingProduct.brandName || ''}
+                onChange={(e) =>
+                  setEditingProduct({ ...editingProduct, brandName: e.target.value })
+                }
+              />
+            </label>
+            <label>
               Цена:
               <input
                 type="number"
@@ -250,6 +268,28 @@ export default function ManageProducts() {
                 }}
               />
             </label>
+
+            {Object.entries(specifications).map(([key, value]) => (
+              <div key={key} style={{ marginBottom: '5px' }}>
+                <label>
+                  {key}:
+                  <input
+                    type={typeof value === 'number' ? 'number' : 'text'}
+                    value={specifications[key] || ''}
+                    onChange={(e) => {
+                      const newValue =
+                        typeof value === 'number'
+                          ? parseFloat(e.target.value) || 0
+                          : e.target.value;
+                      setSpecifications((prev) => ({
+                        ...prev,
+                        [key]: newValue,
+                      }));
+                    }}
+                  />
+                </label>
+              </div>
+            ))}
 
             <div className="modal-actions">
               <button onClick={handleSave}>Сохранить</button>

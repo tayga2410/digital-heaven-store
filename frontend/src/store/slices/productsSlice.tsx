@@ -1,13 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  img?: string;
-  category?: string;
-}
-
 interface ProductState {
   products: Product[];
   loading: boolean;
@@ -20,7 +12,6 @@ const initialState: ProductState = {
   error: null,
 };
 
-// Асинхронный экшен для загрузки продуктов
 export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: string }>(
   'products/fetchProducts',
   async (_, { rejectWithValue }) => {

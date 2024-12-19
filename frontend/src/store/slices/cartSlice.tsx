@@ -4,7 +4,7 @@ interface CartItem {
   id: string;
   name: string;
   price: number;
-  img: string;
+  img: string | File;
   quantity: number;
 }
 
@@ -20,10 +20,10 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addItem: (state, action: PayloadAction<CartItem>) => {
+    addItemCart: (state, action: PayloadAction<CartItem>) => {
       const existingItem = state.items.find((item) => item.id === action.payload.id);
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity; // Увеличиваем количество
+        existingItem.quantity += action.payload.quantity; 
       } else {
         state.items.push(action.payload);
       }
@@ -46,5 +46,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, updateQuantity, removeItem, clearCart } = cartSlice.actions;
+export const { addItemCart, updateQuantity, removeItem, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

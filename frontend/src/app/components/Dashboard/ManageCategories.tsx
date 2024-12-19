@@ -2,12 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-interface Category {
-  id: string;
-  name: string;
-  img?: string | File;
-}
-
 export default function ManageCategories() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
@@ -45,30 +39,32 @@ export default function ManageCategories() {
   };
 
   const handleSave = async () => {
-    if (!editingCategory) return;
-  
+    if (!editingCategory || !editingCategory.name.trim()) {
+      alert('Название категории обязательно.');
+      return;
+    }
+
     try {
+      const formData = new FormData();
+      formData.append('name', editingCategory.name);
+
+      if (editingCategory.img instanceof File) {
+        formData.append('img', editingCategory.img);
+      }
+
       const method = editingCategory.id ? 'PUT' : 'POST';
       const url = editingCategory.id
         ? `http://localhost:4000/api/categories/${editingCategory.id}`
         : 'http://localhost:4000/api/categories';
-  
-      const body = {
-        name: editingCategory.name,
-        img: typeof editingCategory.img === 'string' ? editingCategory.img : undefined,
-      };
-  
+
       const res = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+        body: formData,
       });
-  
+
       if (res.ok) {
         const savedCategory = await res.json();
-  
+
         if (editingCategory.id) {
           setCategories((prev) =>
             prev.map((cat) =>
@@ -78,7 +74,7 @@ export default function ManageCategories() {
         } else {
           setCategories((prev) => [...prev, savedCategory]);
         }
-  
+
         closeModal();
       } else {
         console.error('Failed to save category');
@@ -87,7 +83,6 @@ export default function ManageCategories() {
       console.error('Error saving category:', error);
     }
   };
-  
 
   const handleDelete = async (categoryId: string) => {
     try {

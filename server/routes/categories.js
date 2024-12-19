@@ -1,15 +1,31 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
+const multer = require('multer');
+const path = require('path');
 
 const prisma = new PrismaClient();
 const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(process.cwd(), 'uploads');
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName);
+  },
+});
+const upload = multer({ storage });
+
+router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 router.get('/', async (req, res) => {
   try {
     const categories = await prisma.category.findMany({
       include: {
-        Product: true, 
-      },
+        products: true,
+      }
     });
     res.json(categories);
   } catch (error) {
@@ -18,31 +34,43 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
-    const { name, img } = req.body;
-  
-    try {
-      const category = await prisma.category.create({
-        data: {
-          name,
-          img,
-        },
-      });
-      res.status(201).json(category);
-    } catch (error) {
-      console.error('Error creating category:', error.message);
-      res.status(500).json({ error: 'Failed to create category' });
-    }
-  });
+router.post('/', upload.single('img'), async (req, res) => {
+  const { name } = req.body;
+  const img = req.file?.filename;
 
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const { name, img } = req.body;
+  if (!name) {
+    return res.status(400).json({ error: 'Field "name" is required' });
+  }
 
   try {
+    const newCategory = await prisma.category.create({
+      data: {
+        name,
+        img: img || null,
+      },
+    });
+
+    res.status(201).json(newCategory);
+  } catch (error) {
+    console.error('Error creating category:', error.message);
+    res.status(500).json({ error: 'Failed to create category' });
+  }
+});
+
+
+
+router.put('/:id', upload.single('img'), async (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  const img = req.file ? req.file.filename : undefined;
+
+  try {
+    const data = { name };
+    if (img) data.img = img;
+
     const updatedCategory = await prisma.category.update({
       where: { id },
-      data: { name, img },
+      data,
     });
     res.json(updatedCategory);
   } catch (error) {
@@ -52,24 +80,23 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/:id', async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      await prisma.product.updateMany({
-        where: { categoryId: id },
-        data: { categoryId: null }, 
-      });
-  
-      await prisma.category.delete({
-        where: { id },
-      });
-  
-      res.json({ message: 'Category deleted successfully' });
-    } catch (error) {
-      console.error('Error deleting category:', error.message);
-      res.status(500).json({ error: 'Failed to delete category' });
-    }
-  });
-  
+  const { id } = req.params;
+
+  try {
+    await prisma.product.updateMany({
+      where: { categoryId: id },
+      data: { categoryId: null },
+    });
+
+    await prisma.category.delete({
+      where: { id },
+    });
+
+    res.json({ message: 'Category deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting category:', error.message);
+    res.status(500).json({ error: 'Failed to delete category' });
+  }
+});
 
 module.exports = router;

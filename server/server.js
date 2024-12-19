@@ -7,6 +7,7 @@ const productRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const categoriesRoutes = require('./routes/categories');
+const wishListRoutes = require('./routes/wishlist');
 
 app.use(cors({
   origin: 'http://localhost:3000', 
@@ -20,6 +21,7 @@ app.use('/api/', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/categories', categoriesRoutes);
+app.use('/api/wishlist', wishListRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is running!');

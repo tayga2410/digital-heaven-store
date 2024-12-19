@@ -1,0 +1,31 @@
+.breadcrumbs {
+    margin-bottom: 1rem;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .breadcrumbs ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .breadcrumbs li {
+    display: inline;
+  }
+  
+  .breadcrumbs a {
+    color: #0070f3;
+    text-decoration: none;
+  }
+  
+  .breadcrumbs a:hover {
+    text-decoration: underline;
+  }
+  
+  .breadcrumbs span {
+    color: #999;
+  }
+  

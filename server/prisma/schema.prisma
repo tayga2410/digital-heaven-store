@@ -13,21 +13,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Category {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  img      String?
+  parentId String?    @db.ObjectId
+  parent   Category?  @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children Category[] @relation("CategoryToCategory")
+
+  specSchema Json?
+
+  products Product[]
+}
+
 model Product {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   price      Float
   img        String
-  category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
-  createdAt  DateTime @default(now())
-  categoryId String?  @db.ObjectId
+  categoryId String?    @db.ObjectId
+  category   Category?  @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  brandName  String?
+  specs      Json?
+  createdAt  DateTime   @default(now())
+  Wishlist   Wishlist[]
 }
 
-model Category {
-  id      String    @id @default(auto()) @map("_id") @db.ObjectId
-  name    String
-  img     String?
-  Product Product[]
+model Wishlist {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  productId String   @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }
 
 model User {

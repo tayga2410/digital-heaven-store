@@ -1,10 +1,9 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-import { store, persistor } from '@/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
-import { useEffect, useState } from 'react';
+import { store, persistor } from '@/store/store';
 
 export default function ReduxProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
@@ -13,7 +12,7 @@ export default function ReduxProvider({ children }: { children: ReactNode }) {
     setHydrated(true); 
   }, []);
 
-  if (!hydrated) return <div>Loading...</div>; 
+  if (!hydrated) return <div>Loading...</div>;
 
   return (
     <Provider store={store}>
