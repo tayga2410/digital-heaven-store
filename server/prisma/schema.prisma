@@ -14,17 +14,19 @@ datasource db {
 }
 
 model Category {
-  id       String     @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  img      String?
-  parentId String?    @db.ObjectId
-  parent   Category?  @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  children Category[] @relation("CategoryToCategory")
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String      
+  displayName String?     
+  img         String?
+  parentId    String?     @db.ObjectId
+  parent      Category?   @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children    Category[]  @relation("CategoryToCategory")
 
-  specSchema Json?
+  specSchema  Json?       
 
-  products Product[]
+  products    Product[]
 }
+
 
 model Product {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId

@@ -29,7 +29,14 @@ export default function ManageCategories() {
   }, []);
 
   const openModal = (category?: Category) => {
-    setEditingCategory(category || { id: '', name: '', img: '' });
+    setEditingCategory(
+      category || {
+        id: '',
+        name: '',
+        img: '',
+        specSchema: [],
+      }
+    );
     setModalVisible(true);
   };
 
@@ -47,6 +54,11 @@ export default function ManageCategories() {
     try {
       const formData = new FormData();
       formData.append('name', editingCategory.name);
+      formData.append('displayName', editingCategory.displayName || '');
+      formData.append(
+        'specSchema',
+        JSON.stringify(editingCategory.specSchema || [])
+      );
 
       if (editingCategory.img instanceof File) {
         formData.append('img', editingCategory.img);
@@ -67,9 +79,7 @@ export default function ManageCategories() {
 
         if (editingCategory.id) {
           setCategories((prev) =>
-            prev.map((cat) =>
-              cat.id === savedCategory.id ? savedCategory : cat
-            )
+            prev.map((cat) => (cat.id === savedCategory.id ? savedCategory : cat))
           );
         } else {
           setCategories((prev) => [...prev, savedCategory]);
@@ -81,6 +91,30 @@ export default function ManageCategories() {
       }
     } catch (error) {
       console.error('Error saving category:', error);
+    }
+  };
+
+  const handleAddSpec = () => {
+    if (editingCategory) {
+      const updatedSpecs = [...(editingCategory.specSchema || []), { key: '', type: '' }];
+      setEditingCategory({ ...editingCategory, specSchema: updatedSpecs });
+    }
+  };
+
+  const handleDeleteSpec = (index: number) => {
+    if (editingCategory) {
+      const updatedSpecs = [...(editingCategory.specSchema || [])];
+      updatedSpecs.splice(index, 1);
+      setEditingCategory({ ...editingCategory, specSchema: updatedSpecs });
+    }
+  };
+
+
+  const handleSpecChange = (index: number, field: 'key' | 'type', value: string) => {
+    if (editingCategory) {
+      const updatedSpecs = [...(editingCategory.specSchema || [])];
+      updatedSpecs[index][field] = value;
+      setEditingCategory({ ...editingCategory, specSchema: updatedSpecs });
     }
   };
 
@@ -113,7 +147,8 @@ export default function ManageCategories() {
           <thead>
             <tr>
               <th>Изображение</th>
-              <th>Наименование</th>
+              <th>Наименование на английском</th>
+              <th>Наименование на русском</th>
               <th>Действия</th>
             </tr>
           </thead>
@@ -127,7 +162,7 @@ export default function ManageCategories() {
                         ? URL.createObjectURL(category.img)
                         : `http://localhost:4000/uploads/${category.img}`
                     }
-                    alt=""
+                    alt="category"
                     style={{
                       width: '50px',
                       height: '50px',
@@ -136,6 +171,7 @@ export default function ManageCategories() {
                   />
                 </td>
                 <td>{category.name}</td>
+                <td>{category.displayName}</td>
                 <td>
                   <button onClick={() => openModal(category)}>Редактировать</button>
                   <button onClick={() => handleDelete(category.id)}>Удалить</button>
@@ -165,6 +201,19 @@ export default function ManageCategories() {
               />
             </label>
             <label>
+              Отображаемое имя:
+              <input
+                type="text"
+                value={editingCategory?.displayName || ''}
+                onChange={(e) =>
+                  setEditingCategory({
+                    ...editingCategory,
+                    displayName: e.target.value,
+                  })
+                }
+              />
+            </label>
+            <label>
               Изображение:
               <input
                 type="file"
@@ -177,6 +226,31 @@ export default function ManageCategories() {
                 }}
               />
             </label>
+
+            <h4>Спецификации</h4>
+            <button onClick={handleAddSpec}>Добавить спецификацию</button>
+            <div>
+              {editingCategory.specSchema?.length ? (
+                editingCategory.specSchema.map((spec, index) => (
+                  <div key={index}>
+                    <input
+                      type="text"
+                      placeholder="Название"
+                      value={spec.key}
+                      onChange={(e) =>
+                        handleSpecChange(index, 'key', e.target.value)
+                      }
+                    />
+                    <span>{spec.type}</span>
+                    <button onClick={() => handleDeleteSpec(index)}>Удалить</button>
+                  </div>
+                ))
+              ) : (
+                <p>Нет спецификаций</p>
+              )}
+
+            </div>
+
             <div className="modal-actions">
               <button onClick={handleSave}>Сохранить</button>
               <button onClick={closeModal}>Отмена</button>

@@ -13,7 +13,7 @@ export default function ManageProducts() {
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [specifications, setSpecifications] = useState<Record<string, string | number>>({});
+  const [specifications, setSpecifications] = useState<Array<{ key: string; type: string }>>([]);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -65,14 +65,23 @@ export default function ManageProducts() {
     fetchCategories();
   }, []);
 
-  const openModal = (product?: Product) => {
-    let specs: Record<string, string | number> = {};
-
-    if (product) {
-      specs = product.specs || {};
-    } else if (categories[0]?.specSchema) {
-      specs = { ...categories[0].specSchema };
+  useEffect(() => {
+    if (editingProduct?.categoryId) {
+      const selectedCategory = categories.find((cat) => cat.id === editingProduct.categoryId);
+      if (selectedCategory?.specSchema) {
+        setSpecifications(
+          selectedCategory.specSchema.map((spec) => ({ key: spec.key, type: '' }))
+        );
+      }
     }
+  }, [editingProduct?.categoryId, categories]);
+  
+
+  const openModal = (product?: Product) => {
+    const specs =
+      product?.specs && Array.isArray(product.specs)
+        ? product.specs
+        : categories[0]?.specSchema || [];
 
     setEditingProduct(
       product || { id: '', name: '', price: 0, categoryId: categories[0]?.id || null, brandName: '', img: '' }
@@ -84,7 +93,7 @@ export default function ManageProducts() {
   const closeModal = () => {
     setEditingProduct(null);
     setModalVisible(false);
-    setSpecifications({});
+    setSpecifications([]);
   };
 
   const handleSave = async () => {
@@ -156,8 +165,6 @@ export default function ManageProducts() {
       console.error('Error deleting product:', error);
     }
   };
-
-  const selectedCategory = editingProduct && categories.find((cat) => cat.id === editingProduct.categoryId);
 
   return (
     <div className="manage-products">
@@ -269,25 +276,18 @@ export default function ManageProducts() {
               />
             </label>
 
-            {Object.entries(specifications).map(([key, value]) => (
-              <div key={key} style={{ marginBottom: '5px' }}>
-                <label>
-                  {key}:
-                  <input
-                    type={typeof value === 'number' ? 'number' : 'text'}
-                    value={specifications[key] || ''}
-                    onChange={(e) => {
-                      const newValue =
-                        typeof value === 'number'
-                          ? parseFloat(e.target.value) || 0
-                          : e.target.value;
-                      setSpecifications((prev) => ({
-                        ...prev,
-                        [key]: newValue,
-                      }));
-                    }}
-                  />
-                </label>
+            {specifications.map((spec, index) => (
+              <div key={index} style={{ marginBottom: '5px' }}>
+                <span>{spec.key}</span>:&nbsp;
+                <input
+                  type="text"
+                  value={spec.type || ''}
+                  onChange={(e) => {
+                    const updatedSpecs = [...specifications];
+                    updatedSpecs[index].type = e.target.value;
+                    setSpecifications(updatedSpecs);
+                  }}
+                />
               </div>
             ))}
 

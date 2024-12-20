@@ -21,6 +21,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img }) => {
   const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     dispatch(addItemCart({ id, name, price, img, quantity: 1 }));
+    alert('Товар добавлен корзину!')
   };
 
   const toggleWishlist = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,7 +83,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img }) => {
           alt={name}
         />
         <h2 className='product__card-title'>{name}</h2>
-        <p className='product__card-price'>${price.toFixed(2)}</p>
+        <p className='product__card-price'>${price}</p>
       </Link>
       <div className='product__card-actions'>
         <button className='product__card-button' onClick={handleAddToCart}>
