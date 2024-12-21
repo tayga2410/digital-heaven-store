@@ -1,6 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Slider,
+  Box,
+  Checkbox,
+  FormControlLabel,
+  Typography,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface FiltersProps {
   products: Product[];
@@ -9,38 +20,43 @@ interface FiltersProps {
 }
 
 export default function Filters({ products, category, onFilterChange }: FiltersProps) {
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedSpecs, setSelectedSpecs] = useState<{ [key: string]: string[] }>({});
 
-  const brands = Array.from(
-    new Set(products.map((product) => product.brandName).filter((brand): brand is string => !!brand))
-  );
+  useEffect(() => {
+    if (products.length > 0) {
+      const prices = products.map((product) => product.price);
+      const minPrice = Math.min(...prices);
+      const maxPrice = Math.max(...prices);
+      setPriceRange([minPrice, maxPrice]);
+    }
+  }, [products]);
 
-  const uniqueSpecValues = category?.specSchema
-  ? Object.keys(category.specSchema).reduce((acc, key) => {
-      acc[key] = Array.from(
-        new Set(
-          products
-            .flatMap((product) =>
-              product.specs
-                ? product.specs
-                    .filter((spec) => spec.key === key)
-                    .map((spec) => spec.type)
-                : []
-            )
-            .filter((value): value is string | number => value !== undefined)
-        )
-      );
-      return acc;
-    }, {} as { [key: string]: (string | number)[] })
-  : {};
+  useEffect(() => {
+    const filtered = products.filter((product) => {
+      const matchesPrice =
+        product.price >= priceRange[0] && product.price <= priceRange[1];
 
+      const matchesBrand =
+        selectedBrands.length === 0 || selectedBrands.includes(product.brandName || '');
 
+      const matchesSpecs =
+        Object.entries(selectedSpecs).length === 0 ||
+        Object.entries(selectedSpecs).every(([key, values]) =>
+          values.some((value) =>
+            product.specs?.some((spec) => spec.key === key && spec.type === value)
+          )
+        );
 
-  // Обработчики изменения фильтров
-  const handlePriceChange = (key: 'min' | 'max', value: number) => {
-    setPriceRange((prev) => ({ ...prev, [key]: value }));
+      return matchesPrice && matchesBrand && matchesSpecs;
+    });
+
+    onFilterChange(filtered);
+  }, [products, priceRange, selectedBrands, selectedSpecs, onFilterChange]);
+
+  const handlePriceChange = (event: Event, newValue: number | number[]) => {
+    setPriceRange(newValue as [number, number]);
   };
 
   const handleBrandChange = (brand: string) => {
@@ -50,98 +66,127 @@ export default function Filters({ products, category, onFilterChange }: FiltersP
   };
 
   const handleSpecChange = (key: string, value: string) => {
-    setSelectedSpecs((prev) => ({
-      ...prev,
-      [key]: prev[key]?.includes(value)
-        ? prev[key].filter((v) => v !== value)
-        : [...(prev[key] || []), value],
-    }));
+    setSelectedSpecs((prev) => {
+      const newSpecs = { ...prev };
+      if (newSpecs[key]?.includes(value)) {
+        newSpecs[key] = newSpecs[key]?.filter((v) => v !== value);
+        if (newSpecs[key]?.length === 0) delete newSpecs[key];
+      } else {
+        newSpecs[key] = [...(newSpecs[key] || []), value];
+      }
+      return newSpecs;
+    });
   };
 
-  // Применение фильтров
-  useEffect(() => {
-    const filtered = products.filter((product) => {
-      const matchesPrice =
-        product.price >= priceRange.min && product.price <= priceRange.max;
-
-      const matchesBrand =
-        selectedBrands.length === 0 || selectedBrands.includes(product.brandName || '');
-
-        const matchesSpecs = Object.entries(selectedSpecs).every(([key, values]) =>
-          values.some((value) =>
-            product.specs
-              ? product.specs.some((spec) => spec.key === key && spec.type === value)
-              : false
-          )
-        );
-        
-
-      return matchesPrice && matchesBrand && matchesSpecs;
-    });
-
-    onFilterChange(filtered);
-  }, [products, priceRange, selectedBrands, selectedSpecs, onFilterChange]);
-
   return (
-    <div className="filters">
-      <div className="filter filter--price">
-        <h3>Цена</h3>
-        <label>
-          Min Price: {priceRange.min}
-          <input
-            type="range"
-            min="0"
-            max="10000"
-            step="100"
-            value={priceRange.min}
-            onChange={(e) => handlePriceChange('min', Number(e.target.value))}
-          />
-        </label>
-        <label>
-          Max Price: {priceRange.max}
-          <input
-            type="range"
-            min="0"
-            max="10000"
-            step="100"
-            value={priceRange.max}
-            onChange={(e) => handlePriceChange('max', Number(e.target.value))}
-          />
-        </label>
-      </div>
-
-      <div className="filter filter--brand">
-        <h3>Бренды</h3>
-        {brands.map((brand) => (
-          <label key={brand}>
+    <Box className="filters">
+      <Typography variant="h6">Цена</Typography>
+      <Slider
+        value={priceRange}
+        min={Math.min(...products.map((p) => p.price)) || 0}
+        max={Math.max(...products.map((p) => p.price)) || 10000}
+        step={100}
+        onChange={handlePriceChange}
+        valueLabelDisplay="auto"
+      />
+      <Box>
+        <div className='filters__price-range'>
+          <label> Минимальная цена
             <input
-              type="checkbox"
-              value={brand}
-              onChange={() => handleBrandChange(brand)}
+              type="number"
+              value={priceRange[0] === 0 ? '' : priceRange[0]}
+              onChange={(e) =>
+                setPriceRange([Number(e.target.value) || 0, priceRange[1]])
+              }
             />
-            {brand}
           </label>
-        ))}
-      </div>
+          <label>Максимальная цена
+            <input
+              type="number"
+              value={priceRange[1] === 10000 ? '' : priceRange[1]}
+              onChange={(e) => {
+                const value = e.target.value === '' ? '' : Number(e.target.value);
+                setPriceRange([priceRange[0], value === '' ? 10000 : value]);
+              }}
+            />
+          </label>
+        </div>
+      </Box>
 
-      <div className="filter filter--specs">
-        <h3>Характеристики</h3>
-        {Object.entries(uniqueSpecValues).map(([key, values]) => (
-          <div key={key} className="filter__spec">
-            <h4>{key}</h4>
-            {values.map((value) => (
-              <label key={value} className="filter__checkbox">
-                <input
-                  type="checkbox"
-                  value={value.toString()}
-                  onChange={() => handleSpecChange(key, value.toString())}
+      {category && (
+        <Accordion>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} style={{
+            fontFamily: 'Jura, Arial, sans-serif',
+          }}
+          >
+            <Typography variant="h6"  style={{
+            fontFamily: 'Jura, Arial, sans-serif',
+          }}>Бренды</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <ul className='filters__list'>
+              {Array.from(new Set(products.map((product) => product.brandName))).map((brand) => (
+                <FormControlLabel
+                  key={brand}
+                  control={
+                    <Checkbox
+                      checked={selectedBrands.includes(brand!)}
+                      onChange={() => handleBrandChange(brand!)}
+                    />
+                  }
+                  label={brand}
                 />
-                {value}
-              </label>
+              ))}
+            </ul>
+          </AccordionDetails>
+        </Accordion>
+      )}
+
+      {category && (
+        <Accordion>
+           <AccordionSummary expandIcon={<ExpandMoreIcon />} style={{
+            fontFamily: 'Jura, Arial, sans-serif',
+          }}
+          >
+            <Typography variant="h6"  style={{
+            fontFamily: 'Jura, Arial, sans-serif',
+          }}>Характеристики</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {Object.entries(
+              products.reduce((acc, product) => {
+                product.specs?.forEach((spec) => {
+                  if (!acc[spec.key]) {
+                    acc[spec.key] = new Set<string>();
+                  }
+                  acc[spec.key].add(spec.type);
+                });
+                return acc;
+              }, {} as Record<string, Set<string>>)
+            ).map(([key, values]) => (
+              <Accordion key={key}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography variant="subtitle1">{key}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  {[...values].map((value) => (
+                    <FormControlLabel
+                      key={value}
+                      control={
+                        <Checkbox
+                          checked={selectedSpecs[key]?.includes(value) || false}
+                          onChange={() => handleSpecChange(key, value)}
+                        />
+                      }
+                      label={value}
+                    />
+                  ))}
+                </AccordionDetails>
+              </Accordion>
             ))}
-          </div>
-        ))}
-      </div>
-    </div>
+          </AccordionDetails>
+        </Accordion>
+      )}
+    </Box>
   );
 }

@@ -18,7 +18,7 @@ export default function Breadcrumbs({ categoryName, productName }: BreadcrumbPro
           <span> &gt; </span>
           <Link href="/catalog">Каталог товаров</Link>
         </li>
-        {categoryName && (
+        {categoryName && categoryName !== 'Каталог' && ( 
           <li>
             <span> &gt; </span>
             <Link href={`/catalog?category=${encodeURIComponent(categoryName)}`}>

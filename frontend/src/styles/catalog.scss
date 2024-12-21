@@ -4,6 +4,12 @@
   &__products {
     display: flex;
     flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__container {
+    display: flex;
     gap: 32px;
+
   }
 }

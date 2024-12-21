@@ -98,7 +98,7 @@ export default function ProductPage() {
               <ul className="product-page__list">
                 {product.specs.map((spec: { key: string; type: string }, index: number) => (
                   <li className="product-page__item" key={index}>
-                    <span className="product-page__specs">{spec.key}</span>: {spec.type || 'Не указано'}
+                    <span className="product-page__specs">{spec.key}</span> {spec.type || 'Не указано'}
                   </li>
                 ))}
               </ul>

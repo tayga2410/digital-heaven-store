@@ -87,7 +87,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img }) => {
       </Link>
       <div className='product__card-actions'>
         <button className='product__card-button' onClick={handleAddToCart}>
-          Add to Cart
+          Добавить в корзину
         </button>
        
       </div>

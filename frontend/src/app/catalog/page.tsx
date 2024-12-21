@@ -1,29 +1,30 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Breadcrumbs from '@/app/components/BreadCrumbs';
 import Filters from '@/app/components/Filters';
 import ProductCard from '@/app/components/ProductCard';
-import { useMemo } from 'react';
-
 
 export default function CatalogPage() {
   const searchParams = useSearchParams();
-  const currentCategory = searchParams.get('category'); 
+  const currentCategory = searchParams.get('category');
+
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [finalFilteredProducts, setFinalFilteredProducts] = useState<Product[]>([]);
+
   useEffect(() => {
     async function fetchProducts() {
+      setLoading(true);
       try {
         const res = await fetch('http://localhost:4000/api/products');
         if (res.ok) {
           const data: Product[] = await res.json();
-          setProducts(data); 
-        } else {
-          console.error('Failed to fetch products');
+          setProducts(data);
+          setFinalFilteredProducts(data);
         }
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -31,7 +32,6 @@ export default function CatalogPage() {
         setLoading(false);
       }
     }
-  
     fetchProducts();
   }, []);
 
@@ -49,23 +49,42 @@ export default function CatalogPage() {
         console.error('Error fetching categories:', error);
       }
     }
-
     fetchCategories();
   }, []);
 
-  const filteredProducts = useMemo(() => {
-    if (!products.length) return []; 
-  
-    if (currentCategory) {
-      return products.filter(
-        (product) => product.category?.name === currentCategory
-      );
-    }
-  
-    return products;
-  }, [currentCategory, products]);
+  const categoryFilteredProducts = useMemo(() => {
+    if (!currentCategory) return products;
 
-  const currentCategoryData = categories.find((cat) => cat.name === currentCategory);
+    const matchedCategory = categories.find(
+      (cat) =>
+        cat.displayName?.toLowerCase() === currentCategory.toLowerCase() ||
+        cat.name.toLowerCase() === currentCategory.toLowerCase()
+    );
+
+    if (!matchedCategory) return [];
+
+    return products.filter(
+      (product) => product.categoryId === matchedCategory.id
+    );
+  }, [products, categories, currentCategory]);
+
+
+  const handleFilterChange = useCallback((filtered: Product[]) => {
+    setFinalFilteredProducts((prev) => {
+      if (
+        filtered.length === prev.length &&
+        filtered.every((f, i) => f.id === prev[i]?.id)
+      ) {
+        return prev;
+      }
+      return filtered;
+    });
+  }, []);
+
+
+  const currentCategoryData = categories.find(
+    (cat) => cat.name === currentCategory
+  );
 
   if (loading) return <p>Загрузка каталога...</p>;
   if (products.length === 0) return <p>Продукты не найдены.</p>;
@@ -73,19 +92,18 @@ export default function CatalogPage() {
   return (
     <section className="catalog">
       <Breadcrumbs categoryName={currentCategory || 'Каталог'} />
+
       <div className="catalog__container">
-        <aside className="catalog__filters">
-          <Filters
-            products={filteredProducts}
-            category={currentCategoryData}
-            onFilterChange={(filtered) => console.log('Filtered products:', filtered)} 
-          />
-        </aside>
+        <Filters
+          products={categoryFilteredProducts}
+          category={currentCategoryData}
+          onFilterChange={handleFilterChange}
+        />
         <div className="catalog__products">
-          {filteredProducts.length === 0 ? (
+          {finalFilteredProducts.length === 0 ? (
             <p>Товары не найдены</p>
           ) : (
-            filteredProducts.map((product) => (
+            finalFilteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 id={product.id}
