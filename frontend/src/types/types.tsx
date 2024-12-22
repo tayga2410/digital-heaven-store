@@ -23,6 +23,9 @@ declare global {
     brandName?: string | null; 
     createdAt?: string; 
     specs?: Array<{ key: string; type: string }>;
+    isTrending?: boolean;
+    isBestseller?: boolean;
+    discount?: number;
   }
 
   interface WishlistItem {
@@ -33,6 +36,13 @@ declare global {
       price: number;
       img: string;
     };
+  }
+
+  interface Banner {
+    id: string;
+    img: string | File;
+    link?: string;
+    position: number;
   }
 }
 

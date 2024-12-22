@@ -2,12 +2,14 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProductState {
   products: Product[];
+  bestOffers: Product[]; 
   loading: boolean;
   error: string | null;
 }
 
 const initialState: ProductState = {
   products: [],
+  bestOffers: [],
   loading: false,
   error: null,
 };
@@ -19,6 +21,21 @@ export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: st
       const response = await fetch('http://localhost:4000/api/products');
       if (!response.ok) {
         throw new Error('Failed to fetch products');
+      }
+      return await response.json();
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const fetchBestOffers = createAsyncThunk<Product[], void, { rejectValue: string }>(
+  "products/fetchBestOffers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await fetch("http://localhost:4000/api/best-offers");
+      if (!response.ok) {
+        throw new Error("Failed to fetch best offers");
       }
       return await response.json();
     } catch (error: any) {
@@ -60,6 +77,18 @@ const productsSlice = createSlice({
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch products';
+      })
+      .addCase(fetchBestOffers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchBestOffers.fulfilled, (state, action: PayloadAction<Product[]>) => {
+        state.loading = false;
+        state.bestOffers = action.payload; 
+      })
+      .addCase(fetchBestOffers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch best offers';
       });
   },
 });

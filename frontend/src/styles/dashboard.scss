@@ -1,3 +1,15 @@
+.dashboard {
+  padding: 0 160px;
+
+}
+
+.dashboard__page {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .dashboard__tabs {
   display: flex;
   gap: 1rem;
@@ -9,6 +21,7 @@
   background: #ddd;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  border-radius: 10px;
 
   &.active {
     background: #0070f3;
@@ -23,7 +36,8 @@
     width: 100%;
     border-collapse: collapse;
 
-    th, td {
+    th,
+    td {
       padding: 0.5rem;
       border: 1px solid #ddd;
       text-align: left;
@@ -39,6 +53,8 @@
     padding: 0.3rem 0.6rem;
     border: none;
     cursor: pointer;
+    max-width: 300px;
+    border-radius: 10px;
 
     &:first-of-type {
       background: #0070f3;

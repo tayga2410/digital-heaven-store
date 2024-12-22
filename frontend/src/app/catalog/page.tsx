@@ -110,6 +110,7 @@ export default function CatalogPage() {
                 name={product.name}
                 price={product.price}
                 img={product.img}
+                discount={product.discount}
               />
             ))
           )}

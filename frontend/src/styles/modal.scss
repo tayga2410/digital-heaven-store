@@ -18,7 +18,29 @@
     width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 20px;
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: space-between;
+  }
+
+  .modal-item {
+    display: flex;
+    justify-content: space-between;
   }
   
   .modal-actions {

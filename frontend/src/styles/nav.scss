@@ -30,7 +30,7 @@
   display: flex;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023px) {
   .nav {
     order: 2;
   }
@@ -42,10 +42,16 @@
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 80px;
-    right: 60px;
+    top: 53px;
+    right: 0;
     background-color: white;
     z-index: 1000;
+    padding: 20px 60px 20px 20px;
+    border-radius: 10px 0 0 10px;
+    right: 0;
+    width: 80%;
+    gap: 20px;
+    justify-content: flex-start;
   }
 
   .nav__list--active {
@@ -60,6 +66,6 @@
 
 @media (max-width: 767px) {
   .nav__list {
-    right: 20px;
+    right: 0;
   }
 }

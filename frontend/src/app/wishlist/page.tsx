@@ -22,12 +22,12 @@ const WishlistPage: React.FC = () => {
   }, [wishlist]);
 
   return (
-    <div className="wishlist-page">
+    <div className="wishlist__page">
       <h1>Избранное</h1>
       {wishlist.length === 0 ? (
         <p>Пока тут пусто!</p>
       ) : (
-        <ul className="wishlist-items">
+        <ul className="wishlist__items">
           {wishlist.map((item) => (
             <li key={item.id} className="product__card">
               <button

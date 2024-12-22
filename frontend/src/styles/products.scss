@@ -1,0 +1,33 @@
+.products {
+
+  &__tabs {
+    display: flex;
+    gap: 32px;
+    margin-bottom: 32px;
+  }
+
+  &__tab {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 32px;
+    padding: 0;
+    color: #808080;
+    cursor: pointer;
+    transition: all 0.5s ease;
+
+    &:hover {
+        color: #000000;
+      }
+
+    &.active {
+      color: #000000;
+      
+    }
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}

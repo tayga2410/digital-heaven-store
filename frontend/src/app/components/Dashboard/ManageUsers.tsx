@@ -32,7 +32,7 @@ export default function ManageUsers() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="manage-users">
+    <div className="dashboard__page">
       <h2>Редактирование пользователей</h2>
       <table>
         <thead>
@@ -60,7 +60,6 @@ export default function ManageUsers() {
               <td>
                 <button
                   onClick={() => handleDeleteUser(user.id)}
-                  style={{ color: 'red' }}
                 >
                   Удалить
                 </button>

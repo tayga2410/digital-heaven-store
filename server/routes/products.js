@@ -44,7 +44,7 @@ router.get('/products/:id', async (req, res) => {
 });
 
 router.post('/products', upload.single('img'), async (req, res) => {
-  const { name, price, categoryId, brandName, specifications } = req.body;
+  const { name, price, categoryId, brandName, specifications, isBestseller, isTrending, discount } = req.body;
   const img = req.file?.filename;
 
   try {
@@ -52,36 +52,19 @@ router.post('/products', upload.single('img'), async (req, res) => {
       return res.status(400).json({ error: 'Category ID is required' });
     }
 
-    const category = await prisma.category.findUnique({
-      where: { id: categoryId },
-      select: { specSchema: true },
-    });
+    const specs = specifications ? JSON.parse(specifications) : [];
 
-    if (!category) {
-      return res.status(400).json({ error: 'Invalid category ID' });
-    }
-
-    // Инициализируем спецификации из specSchema или используем переданные
-    let specs = category.specSchema || {};
-    if (specifications) {
-      try {
-        specs = JSON.parse(specifications);
-      } catch (err) {
-        console.error('Failed to parse specifications:', err);
-      }
-    }
-
-    // Создаём продукт с индивидуальными спецификациями
     const newProduct = await prisma.product.create({
       data: {
         name,
         price: parseFloat(price),
         img,
         brandName: brandName || null,
-        specs, // Сохраняем индивидуальные спецификации
-        category: {
-          connect: { id: categoryId },
-        },
+        specs,
+        categoryId,
+        isBestseller: isBestseller === 'true',
+        isTrending: isTrending === 'true',
+        discount: discount ? parseFloat(discount) : 0,
       },
     });
 
@@ -95,63 +78,29 @@ router.post('/products', upload.single('img'), async (req, res) => {
 
 router.put('/products/:id', upload.single('img'), async (req, res) => {
   const { id } = req.params;
-  const { name, price, categoryId, brandName, specifications } = req.body;
+  const { name, price, categoryId, brandName, specifications, isBestseller, isTrending, discount } = req.body;
   const img = req.file?.filename;
 
   try {
-    const category = await prisma.category.findUnique({
-      where: { id: categoryId },
-      select: { specSchema: true }
-    });
+    const updatedData = {
+      name,
+      price: parseFloat(price),
+      brandName: brandName || null,
+      specs: specifications ? JSON.parse(specifications) : [],
+      isBestseller: isBestseller === 'true',
+      isTrending: isTrending === 'true',
+      ...(img && { img }),
+      discount: discount ? parseFloat(discount) : 0,
+    };
 
-    if (!category) {
-      return res.status(400).json({ error: 'Invalid category ID' });
+    if (categoryId) {
+      updatedData.categoryId = categoryId;
     }
 
-    let specsData = {};
-    if (specifications) {
-      try {
-        specsData = JSON.parse(specifications);
-      } catch (parseError) {
-        console.error('Failed to parse specifications:', parseError);
-      }
-    }
-
-    // Обновляем продукт
     const updatedProduct = await prisma.product.update({
       where: { id },
-      data: {
-        name,
-        price: parseFloat(price),
-        brandName: brandName || null,
-        category: { connect: { id: categoryId } },
-        ...(img && { img }),
-      },
-      include: {
-        category: {
-          select: { name: true, specSchema: true }
-        }
-      }
+      data: updatedData,
     });
-
-    // Если пришли новые спецификации, обновляем их в категории
-    if (Object.keys(specsData).length > 0) {
-      await prisma.category.update({
-        where: { id: categoryId },
-        data: { specSchema: specsData }
-      });
-
-      // Заново загружаем продукт с обновлённой категорией
-      const reloadedProduct = await prisma.product.findUnique({
-        where: { id },
-        include: {
-          category: {
-            select: { name: true, specSchema: true }
-          }
-        }
-      });
-      return res.json(reloadedProduct);
-    }
 
     res.json(updatedProduct);
   } catch (error) {
@@ -172,5 +121,71 @@ router.delete("/products/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to delete product" });
   }
 });
+
+router.get("/new-arrivals", async (req, res) => {
+  try {
+    const newArrivals = await prisma.product.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 8,
+    });
+    res.json(newArrivals);
+  } catch (error) {
+    console.error("Error fetching new arrivals:", error.message);
+    res.status(500).json({ error: "Failed to fetch new arrivals" });
+  }
+});
+
+router.get("/bestsellers", async (req, res) => {
+  try {
+    const bestsellers = await prisma.product.findMany({
+      where: {
+        isBestseller: true,
+      },
+      take: 8,
+    });
+    res.json(bestsellers);
+  } catch (error) {
+    console.error("Error fetching bestsellers:", error.message);
+    res.status(500).json({ error: "Failed to fetch bestsellers" });
+  }
+});
+
+router.get("/trending", async (req, res) => {
+  try {
+    const trending = await prisma.product.findMany({
+      where: {
+        isTrending: true,
+      },
+      take: 8,
+    });
+    res.json(trending);
+  } catch (error) {
+    console.error("Error fetching trending products:", error.message);
+    res.status(500).json({ error: "Failed to fetch trending products" });
+  }
+});
+
+router.get("/best-offers", async (req, res) => {
+  try {
+    const bestOffers = await prisma.product.findMany({
+      where: {
+        discount: {
+          gt: 0, 
+        },
+      },
+      orderBy: {
+        discount: "desc", 
+      },
+      take: 10, 
+    });
+    res.json(bestOffers);
+  } catch (error) {
+    console.error("Error fetching best offers:", error.message);
+    res.status(500).json({ error: "Failed to fetch best offers" });
+  }
+});
+
 
 module.exports = router;

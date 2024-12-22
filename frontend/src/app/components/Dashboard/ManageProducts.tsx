@@ -75,7 +75,7 @@ export default function ManageProducts() {
       }
     }
   }, [editingProduct?.categoryId, categories]);
-  
+
 
   const openModal = (product?: Product) => {
     const specs =
@@ -108,7 +108,10 @@ export default function ManageProducts() {
       const formData = new FormData();
       formData.append('name', editingProduct.name);
       formData.append('price', editingProduct.price.toString());
+      formData.append('isBestseller', editingProduct.isBestseller ? 'true' : 'false');
+      formData.append('isTrending', editingProduct.isTrending ? 'true' : 'false');
       formData.append('categoryId', editingProduct.categoryId);
+      formData.append('discount', editingProduct.discount?.toString() || '0');
       formData.append('specifications', JSON.stringify(specifications));
       if (editingProduct.brandName) {
         formData.append('brandName', editingProduct.brandName);
@@ -167,7 +170,7 @@ export default function ManageProducts() {
   };
 
   return (
-    <div className="manage-products">
+    <div className="dashboard__page">
       <h2>Управление товарами</h2>
       <button onClick={() => openModal()}>Добавить товар</button>
       {loading ? (
@@ -180,6 +183,9 @@ export default function ManageProducts() {
               <th>Наименование</th>
               <th>Категория</th>
               <th>Бренд</th>
+              <th>Скидка</th>
+              <th>Бестселлер</th>
+              <th>Популярное</th>
               <th>Цена</th>
               <th>Действия</th>
             </tr>
@@ -199,7 +205,10 @@ export default function ManageProducts() {
                   {categories.find((cat) => cat.id === product.categoryId)?.name || 'Неизвестная категория'}
                 </td>
                 <td>{product.brandName}</td>
-                <td>${product.price.toFixed(2)}</td>
+                <td>{product.discount ? `${product.discount}%` : '—'}</td>
+                <td>{product.isBestseller ? '✅' : '❌'}</td>
+                <td>{product.isTrending ? '✅' : '❌'}</td>
+                <td>${product.price}</td>
                 <td>
                   <button onClick={() => openModal(product)}>Редактировать</button>
                   <button onClick={() => handleDelete(product.id)}>Удалить</button>
@@ -225,7 +234,7 @@ export default function ManageProducts() {
               />
             </label>
             <label>
-              Категория:
+              Категория
               <select
                 value={editingProduct.categoryId || ''}
                 onChange={(e) =>
@@ -240,7 +249,7 @@ export default function ManageProducts() {
               </select>
             </label>
             <label>
-              Бренд:
+              Бренд
               <input
                 type="text"
                 value={editingProduct.brandName || ''}
@@ -250,7 +259,39 @@ export default function ManageProducts() {
               />
             </label>
             <label>
-              Цена:
+              Скидка
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={editingProduct.discount || ''}
+                onChange={(e) =>
+                  setEditingProduct({ ...editingProduct, discount: parseFloat(e.target.value) || 0 })
+                }
+              />
+            </label>
+            <label>
+              Бестселлер:
+              <input
+                type="checkbox"
+                checked={editingProduct.isBestseller || false}
+                onChange={(e) =>
+                  setEditingProduct({ ...editingProduct, isBestseller: e.target.checked })
+                }
+              />
+            </label>
+            <label>
+              Популярное:
+              <input
+                type="checkbox"
+                checked={editingProduct.isTrending || false}
+                onChange={(e) =>
+                  setEditingProduct({ ...editingProduct, isTrending: e.target.checked })
+                }
+              />
+            </label>
+            <label>
+              Цена
               <input
                 type="number"
                 value={editingProduct.price}
@@ -263,7 +304,7 @@ export default function ManageProducts() {
               />
             </label>
             <label>
-              Изображение:
+              Изображение
               <input
                 type="file"
                 accept="image/*"
@@ -275,21 +316,22 @@ export default function ManageProducts() {
                 }}
               />
             </label>
-
-            {specifications.map((spec, index) => (
-              <div key={index} style={{ marginBottom: '5px' }}>
-                <span>{spec.key}</span>:&nbsp;
-                <input
-                  type="text"
-                  value={spec.type || ''}
-                  onChange={(e) => {
-                    const updatedSpecs = [...specifications];
-                    updatedSpecs[index].type = e.target.value;
-                    setSpecifications(updatedSpecs);
-                  }}
-                />
-              </div>
-            ))}
+            <ul className='modal-list'>
+              {specifications.map((spec, index) => (
+                <li className='modal-item' key={index} >
+                  <span>{spec.key}</span>&nbsp;
+                  <input
+                    type="text"
+                    value={spec.type || ''}
+                    onChange={(e) => {
+                      const updatedSpecs = [...specifications];
+                      updatedSpecs[index].type = e.target.value;
+                      setSpecifications(updatedSpecs);
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
 
             <div className="modal-actions">
               <button onClick={handleSave}>Сохранить</button>
