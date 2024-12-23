@@ -19,6 +19,13 @@
     width: 100%;
   }
 
+  &__card-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
   &__card-image {
     width: 160px;
     height: 160px;

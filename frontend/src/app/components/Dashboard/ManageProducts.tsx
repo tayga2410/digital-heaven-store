@@ -261,18 +261,7 @@ export default function ManageProducts() {
                 }
               />
             </label>
-            <label>
-              Скидка
-              <input
-                type="number"
-                min="0"
-                max="100"
-                value={editingProduct.discount || ''}
-                onChange={(e) =>
-                  setEditingProduct({ ...editingProduct, discount: parseFloat(e.target.value) || 0 })
-                }
-              />
-            </label>
+           
             <label>
               Бестселлер:
               <input
@@ -297,12 +286,25 @@ export default function ManageProducts() {
               Цена
               <input
                 type="number"
-                value={editingProduct.price}
-                onChange={(e) =>
+                value={editingProduct.price || ''}
+                onChange={(e) => {
+                  const value = e.target.value ? parseFloat(e.target.value) : 0;
                   setEditingProduct({
                     ...editingProduct,
-                    price: parseFloat(e.target.value),
-                  })
+                    price: value,
+                  });
+                }}
+              />
+            </label>
+            <label>
+              Скидка
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={editingProduct.discount || ''}
+                onChange={(e) =>
+                  setEditingProduct({ ...editingProduct, discount: parseFloat(e.target.value) || 0 })
                 }
               />
             </label>

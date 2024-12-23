@@ -88,7 +88,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0  })
         {discount ? (
           <p className="product__card-price">
             <span className="product__card-original-price">${price}</span>
-            <span className="product__card-discounted-price">${discountedPrice}</span>
+            <span className="product__card-discounted-price">${discountedPrice.toFixed(0)}</span>
           </p>
         ) : (
           <p className="product__card-price">${price}</p>

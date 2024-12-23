@@ -66,7 +66,8 @@ export default function ProductsSection() {
               id={product.id}
               img={product.img}
               name={product.name}
-              price={product.price}
+              price={product.price.toFixed(0)}
+              discount={product.discount}
             />
           ))}
         </div>
