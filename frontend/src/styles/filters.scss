@@ -29,3 +29,10 @@
     flex-direction: column;
   }
 }
+
+@media(max-width: 767px) {
+  .filters {
+    max-width: unset;
+    gap: 12px;
+  }
+}

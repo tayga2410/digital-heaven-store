@@ -7,8 +7,12 @@
 body {
     font-size: 16px;
     font-family: 'Jura', Arial, sans-serif;
-    min-width: 320px;
+    min-width: 375px;
     max-width: 1920px;
+}
+
+main {
+    min-height: 100vh;
 }
 
 a {
@@ -47,7 +51,7 @@ button {
   }
 
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1439px) {
     .container {
         padding: 54px 60px;
     }

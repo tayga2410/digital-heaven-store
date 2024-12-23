@@ -29,7 +29,7 @@ export default function ManageUsers() {
   };
 
   if (loading) return <p>Loading users...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p>У вас нет прав для просмотра и редактирования пользователей</p>;
 
   return (
     <div className="dashboard__page">

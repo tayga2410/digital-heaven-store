@@ -1,5 +1,4 @@
 .products {
-
   &__tabs {
     display: flex;
     gap: 32px;
@@ -16,12 +15,11 @@
     transition: all 0.5s ease;
 
     &:hover {
-        color: #000000;
-      }
+      color: #000000;
+    }
 
     &.active {
       color: #000000;
-      
     }
   }
 
@@ -29,5 +27,21 @@
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .products {
+    &__tabs {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+    }
+
+    &__tab {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 32px;
+      flex: 0 0 auto;
+    }
   }
 }

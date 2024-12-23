@@ -90,7 +90,7 @@ export default function CatalogPage() {
   if (products.length === 0) return <p>Продукты не найдены.</p>;
 
   return (
-    <section className="catalog">
+    <section className="catalog container">
       <Breadcrumbs categoryName={currentCategory || 'Каталог'} />
 
       <div className="catalog__container">

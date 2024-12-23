@@ -187,5 +187,31 @@ router.get("/best-offers", async (req, res) => {
   }
 });
 
+router.get('/search', async (req, res) => {
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'Query is required' });
+  }
+
+  try {
+    const products = await prisma.product.findMany({
+      where: {
+        name: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+      take: 5, 
+    });
+
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching search results:', error.message);
+    res.status(500).json({ error: 'Failed to fetch search results' });
+  }
+});
+
+
 
 module.exports = router;

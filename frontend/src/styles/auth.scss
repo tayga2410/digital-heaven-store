@@ -1,49 +1,80 @@
 .auth-tabs {
-    width: 400px;
-    margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  padding: 100px 160px;
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
     text-align: center;
-    padding-top: 200px;
-  
-    .auth-tabs-header {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-  
-      button {
-        padding: 10px 20px;
-        background: none;
-        border: 1px solid #ddd;
-        cursor: pointer;
-  
-        &.active {
-          background-color: #007bff;
-          color: white;
-        }
-      }
-    }
-  
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-  
-      input {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-      }
-  
-      button {
-        padding: 10px;
+    background: #f6f6f6;
+    max-width: 700px;
+    padding: 35px;
+    border-radius: 15px;
+  }
+
+  &__header {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    justify-content: center;
+
+    button {
+      padding: 10px 20px;
+      background: none;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      border-radius: 15px;
+
+      &.active {
         background-color: #007bff;
         color: white;
-        border: none;
-        cursor: pointer;
-  
-        &:disabled {
-          background-color: #aaa;
-        }
       }
     }
   }
-  
+
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      width: 335px;
+      margin: 0 auto;
+      border-radius: 15px;
+
+      &:disabled {
+        background-color: #aaa;
+      }
+    }
+  }
+}
+
+@media (max-width: 1023px) {
+  .auth-tabs {
+    padding: 75px 60px;
+
+  }
+}
+
+@media (max-width: 549px) {
+  .auth-tabs {
+    &__wrapper {
+      max-width: 375px;
+      padding: 10px;
+    }
+  }
+}

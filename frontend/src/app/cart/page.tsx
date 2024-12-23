@@ -14,13 +14,13 @@ export default function CartPage() {
   );
 
   return (
-    <div className="cart">
+    <div className="cart container">
       {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
+        <p>Ваша корзина пуста</p>
       ) : (
         <div className='cart__container'>
           <div className='cart__wrapper'>
-            <h1 className='cart__title'>Shopping Cart</h1>
+            <h1 className='cart__title'>Корзина</h1>
             <div className='cart__item-container'>
               {cartItems.map((item) => (
                 <div key={item.id} className="cart__item">

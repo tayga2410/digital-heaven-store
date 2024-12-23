@@ -22,7 +22,7 @@ const WishlistPage: React.FC = () => {
   }, [wishlist]);
 
   return (
-    <div className="wishlist__page">
+    <div className="wishlist__page container">
       <h1>Избранное</h1>
       {wishlist.length === 0 ? (
         <p>Пока тут пусто!</p>

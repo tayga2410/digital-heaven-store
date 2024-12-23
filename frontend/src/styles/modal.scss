@@ -49,3 +49,8 @@
     gap: 10px;
   }
   
+  @media (max-width: 767px) {
+    .modal-content {
+      width: 355px;
+    }
+  }

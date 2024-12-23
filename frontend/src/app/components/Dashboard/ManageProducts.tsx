@@ -70,7 +70,10 @@ export default function ManageProducts() {
       const selectedCategory = categories.find((cat) => cat.id === editingProduct.categoryId);
       if (selectedCategory?.specSchema) {
         setSpecifications(
-          selectedCategory.specSchema.map((spec) => ({ key: spec.key, type: '' }))
+          selectedCategory.specSchema.map((spec) => {
+            const existingSpec = editingProduct.specs?.find((s) => s.key === spec.key);
+            return { key: spec.key, type: existingSpec?.type || '' };
+          })
         );
       }
     }

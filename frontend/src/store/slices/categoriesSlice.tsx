@@ -38,11 +38,15 @@ export const saveCategory = createAsyncThunk<Category, Category>(
     try {
       const formData = new FormData();
       formData.append('name', category.name);
-      formData.append('displayName', category.displayName);
-      formData.append('specSchema', JSON.stringify(category.specSchema));
+      formData.append('displayName', category.displayName || '');
+      formData.append(
+        'specSchema',
+        JSON.stringify(category.specSchema || [])
+      );
       if (category.img instanceof File) {
         formData.append('img', category.img);
       }
+      
 
       const method = category.id ? 'PUT' : 'POST';
       const url = category.id

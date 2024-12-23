@@ -30,7 +30,7 @@ export default function Dashboard() {
       const [activeTab, setActiveTab] = useState<'users' | 'banners' | 'categories' | 'products'>('users');
 
   return (
-    <div className="dashboard">
+    <div className="dashboard container">
       <div className="dashboard__tabs">
         <button
           className={activeTab === 'users' ? 'active' : ''}

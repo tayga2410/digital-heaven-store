@@ -8,8 +8,9 @@ export default function AuthTabs() {
   const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
 
   return (
-    <div className='auth-tabs'>
-      <div className='auth-tabs-header'>
+    <div className='auth-tabs container'>
+      <div className='auth-tabs__wrapper'>
+      <div className='auth-tabs__header'>
         <button onClick={() => setActiveTab('login')} className={activeTab === 'login' ? 'active' : ''}>
           Войти по логину
         </button>
@@ -17,7 +18,8 @@ export default function AuthTabs() {
           Зарегистрироваться
         </button>
       </div>
-      <div className="auth-tabs-content">{activeTab === 'login' ? <Login /> : <SignUp />}</div>
+      <div className="auth-tabs__content">{activeTab === 'login' ? <Login /> : <SignUp />}</div>
+      </div>
     </div>
   );
 }

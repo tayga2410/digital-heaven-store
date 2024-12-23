@@ -77,7 +77,7 @@ export default function ProductPage() {
   if (!product) return <p>Продукт не найден</p>;
 
   return (
-    <div className="product-page">
+    <div className="product-page container">
       <Breadcrumbs
         categoryName={product.category?.name || 'Каталог'}
         productName={product.name}
@@ -89,7 +89,7 @@ export default function ProductPage() {
           className="product-page__image"
         />
         <div className="product-page__info">
-          <h1>{product.name}</h1>
+          <h2>{product.name}</h2>
           <p>Цена: ${product.price}</p>
 
           {product.specs && product.specs.length > 0 && (

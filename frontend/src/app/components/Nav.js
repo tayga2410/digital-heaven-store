@@ -19,10 +19,7 @@ export default function Nav() {
           <Link href="/catalog">Каталог</Link>
         </li>
         <li className="nav__item">
-          <Link href="/">Контакты</Link>
-        </li>
-        <li className="nav__item">
-          <Link href="/">Блог</Link>
+          <Link href="/about">О Нас</Link>
         </li>
       </ul>
     </nav>

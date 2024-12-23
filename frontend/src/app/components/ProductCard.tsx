@@ -7,7 +7,7 @@ import { addItemCart } from '@/store/slices/cartSlice';
 import { addItem, removeItem } from '@/store/slices/wishListSlice';
 import { RootState } from '@/store/store';
 
-const ProductCard: React.FC<Product> = ({ id, name, price, img, discount }) => {
+const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0  }) => {
   const dispatch = useDispatch();
   const wishlist = useSelector((state: RootState) => state.wishlist.items);
   const discountedPrice = discount ? price - (price * discount) / 100 : price;
@@ -63,9 +63,9 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount }) => {
   return (
     <div className="product__card">
       <div className='product__features'>
-        {discount && (
-          <span className="product__card-badge">-{discount}%</span>
-        )}
+      {discount > 0 && (
+  <span className="product__card-badge">-{discount}%</span>
+)}
         <button
           className="product__wishlist-button"
           onClick={toggleWishlist}

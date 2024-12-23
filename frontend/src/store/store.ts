@@ -7,6 +7,7 @@ import authReducer from './slices/authSlice';
 import userReducer from './slices/userSlice';
 import wishlistReducer from './slices/wishListSlice';
 import categoriesReducer from './slices/categoriesSlice';
+import searchReducer from './slices/searchSlice';
 
 const createNoopStorage = () => {
   return {
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   users: userReducer,
   wishlist: wishlistReducer,
   categories: categoriesReducer, 
+  search: searchReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

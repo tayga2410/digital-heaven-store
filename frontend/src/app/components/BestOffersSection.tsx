@@ -22,9 +22,9 @@ export default function BestOffersSection() {
   }
 
   return (
-    <section className="best-offers container categories">
-      <h2>Лучшие предложения</h2>
-      <div className="products-grid">
+    <section className="best-offers container">
+      <h2 className='best-offers__title'>Лучшие предложения</h2>
+      <div className="products__wrapper">
         {bestOffers.map((product) => (
           <ProductCard
             key={product.id}

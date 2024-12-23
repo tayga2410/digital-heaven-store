@@ -29,5 +29,11 @@
     color: #999;
   }
 
+  @media (max-width: 767px) {
+    .breadcrumbs {
+      font-size: 12px;
+    }
+  }
+
 
   

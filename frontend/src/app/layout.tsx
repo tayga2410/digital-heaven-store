@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import '../styles/main.scss';
 import Header from './components/Header';
+import Footer from './components/Footer'
 import ClientProviders from './components/ClientProviders';
 
 export const metadata = {
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
           <main>{children}</main>
         </ClientProviders>
+        <Footer />
       </body>
     </html>
   );
