@@ -36,8 +36,12 @@ export default function Login() {
       } else {
         router.push('/dashboard');
       }
-    } catch (err: any) {
-      dispatch(authFailure(err.message));
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        dispatch(authFailure(err.message));  
+      } else {
+        dispatch(authFailure("Неизвестная ошибка"));
+      }
     }
   };
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from "next/link";
+import Image from 'next/image';
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +10,7 @@ export default function Nav() {
   return (
     <nav className="nav">
       <div className="nav__burger" onClick={toggleMenu}>
-        <img src={isOpen ? "/burger-menu-open.svg" : "/burger-menu-closed.svg"} alt={isOpen ? "Close" : "Menu"} width={40} height={40} />
+      <Image src={isOpen ? "/burger-menu-open.svg" : "/burger-menu-closed.svg"} alt={isOpen ? "Close" : "Menu"} width={40} height={40} />
       </div>
       <ul className={`nav__list ${isOpen ? 'nav__list--active' : ''}`}>
         <li className="nav__item">

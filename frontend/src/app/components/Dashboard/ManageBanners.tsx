@@ -8,7 +8,6 @@ export default function ManageBanners() {
   const [modalVisible, setModalVisible] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Fetch all banners
   useEffect(() => {
     async function fetchBanners() {
       try {

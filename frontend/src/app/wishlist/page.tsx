@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { removeItem } from '@/store/slices/wishListSlice';
+import Image from 'next/image';
 
 const WishlistPage: React.FC = () => {
   const wishlist = useSelector((state: RootState) => state.wishlist.items);
@@ -35,16 +36,20 @@ const WishlistPage: React.FC = () => {
                 onClick={() => dispatch(removeItem(item.id))}
                 aria-label={`Remove ${item.name} from Wishlist`}
               >
-                <img
+                <Image
                   src="/like-red.svg"
                   alt="Remove from Wishlist"
                   className="wishlist-icon"
+                  width={30}
+                  height={30}
                 />
               </button>
-              <img
+              <Image
                 src={`http://localhost:4000/uploads/${item.img}`}
                 alt={item.name}
                 className="product__card-image"
+                width={160}
+                height={160}
               />
               <h2 className="product__card-title">{item.name}</h2>
               <p className="product__card-price">${item.price}</p>

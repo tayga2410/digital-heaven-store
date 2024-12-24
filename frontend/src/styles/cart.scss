@@ -96,6 +96,14 @@
   }
 }
 
+@media (min-width: 1441px) {
+  .cart {
+    &__container {
+      justify-content: space-evenly;
+    }
+  }
+}
+
 @media (max-width: 1439px) {
   .cart {
     &__title {

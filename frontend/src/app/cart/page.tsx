@@ -3,6 +3,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { updateQuantity, removeItem } from '@/store/slices/cartSlice';
+import Image from 'next/image';
 
 export default function CartPage() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -24,7 +25,7 @@ export default function CartPage() {
             <div className='cart__item-container'>
               {cartItems.map((item) => (
                 <div key={item.id} className="cart__item">
-                  <img className='cart__item-image' src={`http://localhost:4000/uploads/${item.img}`} alt={item.name} />
+                  <Image className='cart__item-image' src={`http://localhost:4000/uploads/${item.img}`} alt={item.name} width={160} height={160} />
                   <div className='cart__item-description'>
                     <h3 className='cart__item-title'>{item.name}</h3>
                     <div className='cart__item-count'>
@@ -34,7 +35,7 @@ export default function CartPage() {
                     </div>
                     <p className='cart__item-price'>${item.price}</p>
                     <button onClick={() => dispatch(removeItem(item.id))}>
-                      <img src="/remove-button.svg" alt="" />
+                    <img src="/remove-button.svg" alt="" />
                     </button>
                   </div>
                 </div>

@@ -29,7 +29,7 @@ const Footer = () => {
           <ul className='footer__list'>
             <li><Link href="/catalog?category=Phones">Смартфоны</Link></li>
             <li><Link href="/category/laptops">Ноутбуки</Link></li>
-            <li><Link href="/category/headphones">Наушники</Link></li>
+            <li><Link href="/catalog?category=Headphones">Наушники</Link></li>
             <li><Link href="/category/game-consoles">Игровые приставки</Link></li>
             <li><Link href="/category/accessories">Аксессуары</Link></li>
           </ul>

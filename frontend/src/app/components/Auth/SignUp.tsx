@@ -24,8 +24,12 @@ export default function SignUp() {
 
       alert('Registration successful! Please log in.');
       router.push('/auth');
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error(err.message);
+      } else {
+        console.error("Неизвестная ошибка", err);
+      }
     }
   };
 

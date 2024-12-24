@@ -92,6 +92,14 @@
   }
 }
 
+@media (min-width: 1441px) {
+  .product-page {
+    &__container {
+      justify-content: space-evenly;
+    }
+  }
+}
+
 @media (max-width: 1439px) {
   .product-page {
     &__image {
@@ -102,8 +110,6 @@
     &__info {
       max-width: 320px;
     }
-
-   
   }
 }
 
@@ -136,8 +142,6 @@
       gap: 12px;
       align-items: center;
     }
-
-   
 
     &__icons {
       gap: 10px;

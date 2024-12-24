@@ -6,6 +6,7 @@ import Nav from './Nav';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setQuery, fetchSearchResults, clearResults } from '@/store/slices/searchSlice';
 import { debounce } from 'lodash';
+import Image from 'next/image';
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -61,7 +62,7 @@ export default function Header() {
           onClick={() => setIsSearchOpen(!isSearchOpen)}
           aria-label="Search"
         >
-          <img src="/Search.png" alt="Search" width={30} height={30} />
+          <Image src="/Search.png" alt="Search" width={30} height={30} />
         </button>
 
         {isSearchOpen && (
@@ -81,7 +82,7 @@ export default function Header() {
                     <li key={product.id} className="header__search-item">
                       <Link href={`/product/${product.id}`}>
                         <div className="header__search-item-content">
-                          <img
+                        <Image
                             src={`http://localhost:4000/uploads/${product.img}`}
                             alt={product.name}
                             className="header__search-item-img"
@@ -100,17 +101,17 @@ export default function Header() {
         <ul className="header__icons">
           <li>
             <Link href="/wishlist">
-              <img src="/header/wishlist-icon.svg" alt="Wishlist" width={25} height={22} />
+            <Image src="/header/wishlist-icon.svg" alt="Wishlist" width={25} height={22} />
             </Link>
           </li>
           <li>
             <Link href="/cart">
-              <img src="/header/cart-icon.svg" alt="Cart" width={25} height={22} />
+            <Image src="/header/cart-icon.svg" alt="Cart" width={25} height={22} />
             </Link>
           </li>
           <li>
             <Link href="/auth">
-              <img src="/header/cabinet-icon.svg" alt="Cabinet" width={17} height={22} />
+            <Image src="/header/cabinet-icon.svg" alt="Cabinet" width={17} height={22} />
             </Link>
           </li>
         </ul>
