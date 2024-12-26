@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/store/store';
 import { updateQuantity, removeItem } from '@/store/slices/cartSlice';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function CartPage() {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -51,7 +52,9 @@ export default function CartPage() {
               </label>
             </form>
             <span className='cart__total-amount'>Общая сумма: ${totalAmount.toFixed(0)}</span>
-            <button className='cart__checkout-button'>К оплате</button>
+            <Link href="/payments" passHref>
+      <button className='cart__checkout-button'>К оплате</button>
+    </Link>
           </div>
         </div>
       )}

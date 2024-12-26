@@ -12,13 +12,14 @@ export default function CatalogPage() {
 
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   const [finalFilteredProducts, setFinalFilteredProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     async function fetchProducts() {
-      setLoading(true);
+      setLoadingProducts(true);
       try {
         const res = await fetch('http://localhost:4000/api/products');
         if (res.ok) {
@@ -29,7 +30,7 @@ export default function CatalogPage() {
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
-        setLoading(false);
+        setLoadingProducts(false);
       }
     }
     fetchProducts();
@@ -37,6 +38,7 @@ export default function CatalogPage() {
 
   useEffect(() => {
     async function fetchCategories() {
+      setLoadingCategories(true);
       try {
         const res = await fetch('http://localhost:4000/api/categories');
         if (res.ok) {
@@ -47,6 +49,8 @@ export default function CatalogPage() {
         }
       } catch (error) {
         console.error('Error fetching categories:', error);
+      } finally {
+        setLoadingCategories(false);
       }
     }
     fetchCategories();
@@ -68,7 +72,6 @@ export default function CatalogPage() {
     );
   }, [products, categories, currentCategory]);
 
-
   const handleFilterChange = useCallback((filtered: Product[]) => {
     setFinalFilteredProducts((prev) => {
       if (
@@ -81,17 +84,22 @@ export default function CatalogPage() {
     });
   }, []);
 
+  const currentCategoryData = useMemo(() => {
+    return categories.find(
+      (cat) =>
+        cat.displayName?.toLowerCase() === currentCategory?.toLowerCase() ||
+        cat.name.toLowerCase() === currentCategory?.toLowerCase()
+    );
+  }, [categories, currentCategory]);
 
-  const currentCategoryData = categories.find(
-    (cat) => cat.name === currentCategory
-  );
-
-  if (loading) return <p>Загрузка каталога...</p>;
+  if (loadingProducts || loadingCategories) return <p>Загрузка каталога...</p>;
   if (products.length === 0) return <p>Продукты не найдены.</p>;
 
   return (
     <section className="catalog container">
-      <Breadcrumbs categoryName={currentCategory || 'Каталог'} />
+      <Breadcrumbs
+        categoryName={currentCategoryData?.displayName || 'Каталог'}
+      />
 
       <div className="catalog__container">
         <Filters

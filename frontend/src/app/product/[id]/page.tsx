@@ -3,19 +3,26 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Breadcrumbs from '@/app/components/BreadCrumbs';
+import { fetchCategories, selectCategories } from '@/store/slices/categoriesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemCart } from '@/store/slices/cartSlice';
 import { addItem, removeItem } from '@/store/slices/wishListSlice';
 import { RootState } from '@/store/store';
+import { useAppDispatch } from '@/store/hooks';
 
 export default function ProductPage() {
   const { id } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
+  const categories = useSelector(selectCategories);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const wishlist = useSelector((state: RootState) => state.wishlist.items);
   const isInWishlist = wishlist.some((item) => item.id === id);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.stopPropagation();
@@ -73,13 +80,15 @@ export default function ProductPage() {
     fetchProduct();
   }, [id]);
 
+  const category = product ? categories.find((cat) => cat.id === product.categoryId) : undefined;
+
   if (loading) return <p>Загрузка продуктов</p>;
   if (!product) return <p>Продукт не найден</p>;
 
   return (
     <div className="product-page container">
       <Breadcrumbs
-        categoryName={product.category?.name || 'Каталог'}
+        categoryName={category?.displayName || 'Каталог'} 
         productName={product.name}
       />
       <div className="product-page__container">

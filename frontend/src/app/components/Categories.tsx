@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation'; 
 import { useAppDispatch } from '@/store/hooks';
 import { fetchCategories, selectCategories } from '../../store/slices/categoriesSlice';
+import Image from 'next/image';
 
 export default function Categories() {
   const dispatch = useAppDispatch();
@@ -42,10 +43,12 @@ export default function Categories() {
             className="categories__item"
             onClick={() => handleCategoryClick(category.name)} 
           >
-            <img
+            <Image
               className="categories__image"
               src={`http://localhost:4000/uploads/${category.img}`}
               alt={category.displayName}
+              width={48}
+              height={48}
             />
             <span className="categories__name">{category.displayName}</span>
           </li>
