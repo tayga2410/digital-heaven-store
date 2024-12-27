@@ -58,7 +58,7 @@ export default function Hero() {
         <div className="hero__banner-group">
           {banners[1] && (
             <a
-              href={banners[4].link}
+              href={banners[1].link}
               target="_blank"
               rel="noopener noreferrer"
               className="hero__banner hero__banner--2"
@@ -72,7 +72,7 @@ export default function Hero() {
           <div className='hero__banner-group hero__banner-group--row'>
             {banners[2] && (
               <a
-                href={banners[4].link}
+                href={banners[2].link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hero__banner hero__banner--3"
@@ -85,7 +85,7 @@ export default function Hero() {
             )}
             {banners[3] && (
               <a
-                href={banners[4].link}
+                href={banners[3].link}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hero__banner hero__banner--4"

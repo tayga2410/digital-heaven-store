@@ -9,7 +9,6 @@ import { addItemCart } from '@/store/slices/cartSlice';
 import { addItem, removeItem } from '@/store/slices/wishListSlice';
 import { RootState } from '@/store/store';
 import { useAppDispatch } from '@/store/hooks';
-import Image from 'next/image';
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -128,14 +127,14 @@ export default function ProductPage() {
           </div>
           <ul className='product-page__icons'>
             <li className='product-page__icon'>
-              <Image src="/delivery.png" alt="delivery" width={56} height={56} />
+              <img src="/Delivery.svg" alt="delivery"/>
               <div className='product-page__icons-text-wrapper'>
                 <p className='product-page__text'>Доставка</p>
                 <span className='product-page__icons-subtext'>1 - 2 дня</span>
               </div>
             </li>
             <li className='product-page__icon'>
-            <Image src="/guaranteed.png" alt="guaranteed" width={56} height={56} />
+            <img src="/Guaranteed.svg" alt="guaranteed"/>
               <div className='product-page__icons-text-wrapper'>
                 <p className='product-page__text'>В наличии</p>
                 <span className='product-page__icons-subtext'>Да</span>
@@ -143,7 +142,7 @@ export default function ProductPage() {
 
             </li>
             <li className='product-page__icon'>
-            <Image src="/stock.png" alt="stock" width={56} height={56} />
+            <img src="/Stock.svg" alt="stock"/>
               <div className='product-page__icons-text-wrapper'>
                 <p className='product-page__text'>Гарантия</p>
                 <span className='product-page__icons-subtext'>1 год</span>
