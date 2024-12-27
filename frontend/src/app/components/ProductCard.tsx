@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { addItemCart } from '@/store/slices/cartSlice';
 import { addItem, removeItem } from '@/store/slices/wishListSlice';
 import { RootState } from '@/store/store';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) => {
   const dispatch = useDispatch();
@@ -14,11 +15,34 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
   const discountedPrice = discount ? price - (price * discount) / 100 : price;
 
   const [isInWishlist, setIsInWishlist] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const itemInWishlist = wishlist.some((item: Product) => item.id === id);
     setIsInWishlist(itemInWishlist);
   }, [wishlist, id]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.9 }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, []);
 
   const handleAddToCart = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -61,8 +85,26 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
     }
   };
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: { duration: 0.5 },
+    },
+    hover: { scale: 1.05 },
+  };
+
   return (
-    <div className="product__card">
+    <motion.div
+      className="product__card"
+      ref={cardRef}
+      variants={cardVariants}
+      initial="hidden"
+      animate={isVisible ? "visible" : "hidden"}
+      whileHover="hover"
+    >
       <div className='product__features'>
         {discount > 0 && (
           <span className="product__card-badge">-{discount}%</span>
@@ -104,9 +146,8 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
           Добавить в корзину
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
-
 
 export default ProductCard;

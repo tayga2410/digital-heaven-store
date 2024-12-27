@@ -25,6 +25,12 @@
     background-color: #EDEDED;
     gap: 8px;
     cursor: pointer;
+
+    &:hover,
+    &:active,
+    :focus {
+      background: #c2c0c0;
+    }
   }
 }
 

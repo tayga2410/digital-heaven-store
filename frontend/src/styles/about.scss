@@ -31,6 +31,12 @@
     cursor: pointer;
     color: #ffffff;
 
+    &:hover,
+    &:focus,
+    &:active {
+      color:#faebd7;
+    }
+
     &.active {
       background-color: #9a9a9a;
     }

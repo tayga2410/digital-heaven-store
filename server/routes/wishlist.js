@@ -1,12 +1,15 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
+const { authenticate } = require('../middleware/auth'); 
 const router = express.Router();
 
 const prisma = new PrismaClient();
 
+router.use(authenticate);
+
 router.get('/', async (req, res) => {
-  const userId = req.user.id; 
   try {
+    const userId = req.user.id; 
     const wishlist = await prisma.wishlist.findMany({
       where: { userId },
       include: { product: true },
@@ -19,10 +22,10 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const { productId } = req.body;
-  const userId = req.user.id;
-
   try {
+    const { productId } = req.body;
+    const userId = req.user.id;
+
     const existingItem = await prisma.wishlist.findUnique({
       where: {
         userId_productId: {
@@ -51,10 +54,10 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/:productId', async (req, res) => {
-  const { productId } = req.params;
-  const userId = req.user.id;
-
   try {
+    const { productId } = req.params;
+    const userId = req.user.id;
+
     await prisma.wishlist.deleteMany({
       where: {
         userId,
