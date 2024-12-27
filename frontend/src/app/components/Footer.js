@@ -28,10 +28,9 @@ const Footer = () => {
         <h3 className='footer__title'>Популярные категории</h3>
           <ul className='footer__list'>
             <li><Link className='footer__link' href="/catalog?category=Phones">Смартфоны</Link></li>
-            <li><Link className='footer__link' href="/category/laptops">Ноутбуки</Link></li>
+            <li><Link className='footer__link' href="/catalog?category=Notebooks">Ноутбуки</Link></li>
             <li><Link className='footer__link' href="/catalog?category=Headphones">Наушники</Link></li>
-            <li><Link className='footer__link' href="/category/game-consoles">Игровые приставки</Link></li>
-            <li><Link className='footer__link' href="/category/accessories">Аксессуары</Link></li>
+            <li><Link className='footer__link' href="/catalog?category=Consoles">Игровые приставки</Link></li>
           </ul>
         </div>
       </div>
