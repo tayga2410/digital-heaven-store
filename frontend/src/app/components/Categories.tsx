@@ -13,7 +13,7 @@ export default function Categories() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const categories = useSelector(selectCategories);
-  const { loading, error } = useSelector((state: RootState) => state.categories);
+  const { loading } = useSelector((state: RootState) => state.categories);
 
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement | null>(null);
