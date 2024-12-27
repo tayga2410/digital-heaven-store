@@ -9,7 +9,7 @@ export default function Hero() {
   useEffect(() => {
     async function fetchBanners() {
       try {
-        const res = await fetch('http://localhost:4000/api/banners');
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/banners');
         if (res.ok) {
           const data: Banner[] = await res.json();
           setBanners(data);
@@ -45,7 +45,7 @@ export default function Hero() {
           >
             <img
               className="hero__main-banner"
-              src={`http://localhost:4000/uploads/${banners[0].img}`}
+              src={`https://digital-heaven-store.onrender.com/uploads/${banners[0].img}`}
               alt="Главный баннер"
             />
           </a>
@@ -64,7 +64,7 @@ export default function Hero() {
               className="hero__banner hero__banner--2"
             >
               <img
-                src={`http://localhost:4000/uploads/${banners[1].img}`}
+                src={`https://digital-heaven-store.onrender.com/uploads/${banners[1].img}`}
                 alt="второй баннер"
               />
             </a>
@@ -78,7 +78,7 @@ export default function Hero() {
                 className="hero__banner hero__banner--3"
               >
                 <img
-                  src={`http://localhost:4000/uploads/${banners[2].img}`}
+                  src={`https://digital-heaven-store.onrender.com/uploads/${banners[2].img}`}
                   alt="третий баннер"
                 />
               </a>
@@ -91,7 +91,7 @@ export default function Hero() {
                 className="hero__banner hero__banner--4"
               >
                 <img
-                  src={`http://localhost:4000/uploads/${banners[3].img}`}
+                  src={`https://digital-heaven-store.onrender.com/uploads/${banners[3].img}`}
                   alt="четвертый баннер"
                 />
               </a>

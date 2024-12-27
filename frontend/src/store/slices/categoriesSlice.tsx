@@ -17,7 +17,7 @@ export const fetchCategories = createAsyncThunk<Category[], void>(
   'categories/fetchCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:4000/api/categories');
+      const response = await fetch('https://digital-heaven-store.onrender.com/api/categories');
       if (!response.ok) throw new Error('Failed to fetch categories');
       const data = await response.json();
       return data;
@@ -48,8 +48,8 @@ export const saveCategory = createAsyncThunk<Category, Category>(
 
       const method = category.id ? 'PUT' : 'POST';
       const url = category.id
-        ? `http://localhost:4000/api/categories/${category.id}`
-        : 'http://localhost:4000/api/categories';
+        ? `https://digital-heaven-store.onrender.com/api/categories/${category.id}`
+        : 'https://digital-heaven-store.onrender.com/api/categories';
 
       const response = await fetch(url, {
         method,

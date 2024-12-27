@@ -40,7 +40,7 @@ const initialState: UsersState = {
 };
 
 export const fetchUsers = createAsyncThunk<User[]>('users/fetchUsers', async () => {
-  const response = await fetch('http://localhost:4000/api/admin/users', {
+  const response = await fetch('https://digital-heaven-store.onrender.com/api/admin/users', {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   });
 
@@ -58,7 +58,7 @@ export const updateUserRole = createAsyncThunk<
 >(
   'users/updateUserRole',
   async ({ id, role }: UpdateUserRoleParams) => {
-    const response = await fetch(`http://localhost:4000/api/admin/users/${id}/role`, {
+    const response = await fetch(`https://digital-heaven-store.onrender.com/api/admin/users/${id}/role`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
