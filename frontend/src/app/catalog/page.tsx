@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Breadcrumbs from '@/app/components/BreadCrumbs';
 import Filters from '@/app/components/Filters';
 import ProductCard from '@/app/components/ProductCard';
 
 export default function CatalogPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const currentCategory = searchParams.get('category');
 
   const [products, setProducts] = useState<Product[]>([]);
@@ -92,6 +93,10 @@ export default function CatalogPage() {
     );
   }, [categories, currentCategory]);
 
+  const handleCategoryClick = (category: string) => {
+    router.push(`/catalog?category=${encodeURIComponent(category)}`);
+  };
+
   if (loadingProducts || loadingCategories) return <p>Загрузка каталога...</p>;
   if (products.length === 0) return <p>Продукты не найдены.</p>;
 
@@ -100,6 +105,20 @@ export default function CatalogPage() {
       <Breadcrumbs
         categoryName={currentCategoryData?.displayName || 'Каталог'}
       />
+
+      <div className="catalog__categories-navigation">
+        {categories.map((category) => (
+          <button
+            key={category.id}
+            onClick={() => handleCategoryClick(category.name)}
+            className={`catalog__category-button ${
+              currentCategory === category.name ? 'active' : ''
+            }`}
+          >
+            {category.displayName || category.name}
+          </button>
+        ))}
+      </div>
 
       <div className="catalog__container">
         <Filters
