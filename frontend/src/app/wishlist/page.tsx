@@ -28,7 +28,7 @@ const WishlistPage: React.FC = () => {
       {wishlist.length === 0 ? (
         <p>Пока тут пусто!</p>
       ) : (
-        <ul className="wishlist__items">
+        <ul className="products__wrapper">
           {wishlist.map((item) => (
             <li key={item.id} className="product__card">
               <button
@@ -45,7 +45,7 @@ const WishlistPage: React.FC = () => {
                 />
               </button>
               <Image
-                src={`http://localhost:4000/uploads/${item.img}`}
+                src={`https://digital-heaven-store.onrender.com/uploads/${item.img}`}
                 alt={item.name}
                 className="product__card-image"
                 width={160}

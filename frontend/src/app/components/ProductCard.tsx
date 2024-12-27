@@ -30,7 +30,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
           setIsVisible(true);
         }
       },
-      { threshold: 0.9 }
+      { threshold: 0.3 }
     );
 
     if (cardRef.current) {
