@@ -11,6 +11,31 @@
     gap: 32px;
 
   }
+
+  &__categories-navigation {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  &__category-button {
+    padding: 10px 15px 10px 0;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  &__category-button.active {
+    background-color: #0070f3;
+    color: white;
+  }
+  
+  &__category-button:hover {
+    background-color: #e0e0e0;
+  }
 }
 
 @media(max-width: 767px) {
