@@ -48,6 +48,9 @@
 
 @media (max-width: 767px) {
     .categories {
+      h2 {
+        font-size: 29px;
+      }
 
         &__list {
             gap: 16px;
