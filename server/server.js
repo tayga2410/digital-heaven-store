@@ -3,6 +3,8 @@ const app = express();
 const path = require('path');
 const cors = require('cors');
 
+const apiUrl = process.env.API_BASE_URL;
+
 const productRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
@@ -11,7 +13,7 @@ const wishListRoutes = require('./routes/wishlist');
 const bannerRoutes = require("./routes/banners");
 
 app.use(cors({
-  origin: 'http://localhost:3000', 
+  origin: 'https://digital-heaven.vercel.app', 
 }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -31,5 +33,5 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
