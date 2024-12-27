@@ -86,7 +86,7 @@ export default function Categories() {
           >
             <Image
               className="categories__image"
-              src={`http://localhost:4000/uploads/${category.img}`}
+              src={`https://digital-heaven-store.onrender.com/uploads/${category.img}`}
               alt={category.displayName || 'No image'}
               width={48}
               height={48}

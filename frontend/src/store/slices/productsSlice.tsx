@@ -18,7 +18,7 @@ export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: st
   'products/fetchProducts',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:4000/api/products');
+      const response = await fetch('https://digital-heaven-store.onrender.com/api/products');
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
@@ -36,7 +36,7 @@ export const fetchBestOffers = createAsyncThunk<Product[], void, { rejectValue: 
   "products/fetchBestOffers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:4000/api/best-offers");
+      const response = await fetch("https://digital-heaven-store.onrender.com/api/best-offers");
       if (!response.ok) {
         throw new Error("Failed to fetch best offers");
       }

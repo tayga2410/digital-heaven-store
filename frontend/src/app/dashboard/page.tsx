@@ -9,7 +9,7 @@ import ManageCategories from '../components/Dashboard/ManageCategories';
 export default function Dashboard() {
     useEffect(() => {
         async function fetchData() {
-          const res = await fetch('http://localhost:4000/api/admin/users', {
+          const res = await fetch('https://digital-heaven-store.onrender.com/api/admin/users', {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },

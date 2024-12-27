@@ -26,7 +26,7 @@ export default function CartPage() {
             <div className='cart__item-container'>
               {cartItems.map((item) => (
                 <div key={item.id} className="cart__item">
-                  <Image className='cart__item-image' src={`http://localhost:4000/uploads/${item.img}`} alt={item.name} width={160} height={160} />
+                  <Image className='cart__item-image' src={`https://digital-heaven-store.onrender.com/uploads/${item.img}`} alt={item.name} width={160} height={160} />
                   <div className='cart__item-description'>
                     <h3 className='cart__item-title'>{item.name}</h3>
                     <div className='cart__item-count'>

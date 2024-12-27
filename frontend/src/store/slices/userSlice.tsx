@@ -78,7 +78,7 @@ export const updateUserRole = createAsyncThunk<
 export const deleteUser = createAsyncThunk<string, string, { rejectValue: string }>(
   'users/deleteUser',
   async (id) => {
-    const response = await fetch(`http://localhost:4000/api/admin/users/${id}`, {
+    const response = await fetch(`https://digital-heaven-store.onrender.com/api/admin/users/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,

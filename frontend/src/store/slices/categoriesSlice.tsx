@@ -72,7 +72,7 @@ export const deleteCategory = createAsyncThunk<string, string>(
   'categories/deleteCategory',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/categories/${id}`, {
+      const response = await fetch(`https://digital-heaven-store.onrender.com/api/categories/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete category');
@@ -81,8 +81,7 @@ export const deleteCategory = createAsyncThunk<string, string>(
       if (error instanceof Error) {
         return rejectWithValue(error.message);
       }
-      // Если ошибка не является экземпляром Error, можно вернуть дефолтное сообщение
-      return rejectWithValue('An unknown error occurred');
+       return rejectWithValue('An unknown error occurred');
     }
   }
 );

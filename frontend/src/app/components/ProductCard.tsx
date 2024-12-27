@@ -58,7 +58,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
       dispatch(removeItem(id));
       if (token) {
         try {
-          await fetch(`http://localhost:4000/api/wishlist/${id}`, {
+          await fetch(`https://digital-heaven-store.onrender.com/api/wishlist/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           });
@@ -126,7 +126,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
       <Link href={`/product/${id}`} className="product__card-link">
         <Image
           className="product__card-image"
-          src={`http://localhost:4000/uploads/${img}`}
+          src={`https://digital-heaven-store.onrender.com/uploads/${img}`}
           alt={name}
           width={160}
           height={160}

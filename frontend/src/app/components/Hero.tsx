@@ -107,7 +107,7 @@ export default function Hero() {
             className="hero__banner hero__banner--5"
           >
             <img
-              src={`http://localhost:4000/uploads/${banners[4].img}`}
+              src={`https://digital-heaven-store.onrender.com/uploads/${banners[4].img}`}
               alt="Пятый баннер"
             />
           </a>

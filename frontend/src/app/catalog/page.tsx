@@ -21,7 +21,7 @@ export default function CatalogPage() {
     async function fetchProducts() {
       setLoadingProducts(true);
       try {
-        const res = await fetch('http://localhost:4000/api/products');
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/products');
         if (res.ok) {
           const data: Product[] = await res.json();
           setProducts(data);
@@ -40,7 +40,7 @@ export default function CatalogPage() {
     async function fetchCategories() {
       setLoadingCategories(true);
       try {
-        const res = await fetch('http://localhost:4000/api/categories');
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/categories');
         if (res.ok) {
           const data: Category[] = await res.json();
           setCategories(data);

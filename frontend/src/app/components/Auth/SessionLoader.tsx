@@ -10,7 +10,7 @@ export default function SessionLoader() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('http://localhost:4000/api/auth/me', {
+      fetch('https://digital-heaven-store.onrender.com/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then((res) => res.json())

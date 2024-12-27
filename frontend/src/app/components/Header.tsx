@@ -83,7 +83,7 @@ export default function Header() {
                       <Link href={`/product/${product.id}`}>
                         <div className="header__search-item-content">
                         <Image
-                            src={`http://localhost:4000/uploads/${product.img}`}
+                            src={`https://digital-heaven-store.onrender.com/uploads/${product.img}`}
                             alt={product.name}
                             className="header__search-item-img"
                           />

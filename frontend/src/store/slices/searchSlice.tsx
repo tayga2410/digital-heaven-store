@@ -18,7 +18,7 @@ export const fetchSearchResults = createAsyncThunk<Product[], string, { rejectVa
   'search/fetchSearchResults',
   async (query, { rejectWithValue }) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/search?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`https://digital-heaven-store.onrender.com/api/search?query=${encodeURIComponent(query)}`);
       if (!response.ok) {
         throw new Error('Failed to fetch search results');
       }

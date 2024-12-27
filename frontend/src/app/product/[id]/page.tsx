@@ -64,7 +64,7 @@ export default function ProductPage() {
     if (!id) return;
     async function fetchProduct() {
       try {
-        const res = await fetch(`http://localhost:4000/api/products/${id}`);
+        const res = await fetch(`https://digital-heaven-store.onrender.com/api/products/${id}`);
         if (res.ok) {
           const data = await res.json();
           setProduct(data);
@@ -93,7 +93,7 @@ export default function ProductPage() {
       />
       <div className="product-page__container">
         <img
-          src={`http://localhost:4000/uploads/${product.img}`}
+          src={`https://digital-heaven-store.onrender.com/uploads/${product.img}`}
           alt={product.name}
           className="product-page__image"
         />
