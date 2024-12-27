@@ -11,7 +11,7 @@ export default function ManageBanners() {
   useEffect(() => {
     async function fetchBanners() {
       try {
-        const res = await fetch('http://localhost:4000/api/banners');
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/banners');
         if (res.ok) {
           const data: Banner[] = await res.json();
           setBanners(data);
@@ -61,8 +61,8 @@ export default function ManageBanners() {
 
       const method = editingBanner.id ? 'PUT' : 'POST';
       const url = editingBanner.id
-        ? `http://localhost:4000/api/banners/${editingBanner.id}`
-        : 'http://localhost:4000/api/banners';
+        ? `https://digital-heaven-store.onrender.com/api/banners/${editingBanner.id}`
+        : 'https://digital-heaven-store.onrender.com/api/banners';
 
       const res = await fetch(url, {
         method,
@@ -93,7 +93,7 @@ export default function ManageBanners() {
 
   const handleDelete = async (bannerId: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/api/banners/${bannerId}`, {
+      const res = await fetch(`https://digital-heaven-store.onrender.com/api/banners/${bannerId}`, {
         method: 'DELETE',
       });
 
@@ -135,7 +135,7 @@ export default function ManageBanners() {
                   </td>
                   <td>
                     <img
-                      src={`http://localhost:4000/uploads/${banner.img}`}
+                      src={`https://digital-heaven-store.onrender.com/uploads/${banner.img}`}
                       alt={`Баннер ${banner.position}`}
                       style={{
                         width: '50px',

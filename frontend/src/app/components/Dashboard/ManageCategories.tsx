@@ -11,7 +11,7 @@ export default function ManageCategories() {
   useEffect(() => {
     async function fetchCategories() {
       try {
-        const res = await fetch('http://localhost:4000/api/categories');
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/categories');
         if (res.ok) {
           const data: Category[] = await res.json();
           setCategories(data);
@@ -66,8 +66,8 @@ export default function ManageCategories() {
 
       const method = editingCategory.id ? 'PUT' : 'POST';
       const url = editingCategory.id
-        ? `http://localhost:4000/api/categories/${editingCategory.id}`
-        : 'http://localhost:4000/api/categories';
+        ? `https://digital-heaven-store.onrender.com/api/categories/${editingCategory.id}`
+        : 'https://digital-heaven-store.onrender.com/api/categories';
 
       const res = await fetch(url, {
         method,
@@ -121,7 +121,7 @@ export default function ManageCategories() {
   const handleDelete = async (categoryId: string) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/categories/${categoryId}`,
+        `http://https://digital-heaven-store.onrender.com/api/categories/${categoryId}`,
         { method: 'DELETE' }
       );
 
@@ -160,7 +160,7 @@ export default function ManageCategories() {
                     src={
                       category.img instanceof File
                         ? URL.createObjectURL(category.img)
-                        : `http://localhost:4000/uploads/${category.img}`
+                        : `https://digital-heaven-store.onrender.com/uploads/${category.img}`
                     }
                     alt="category"
                     style={{

@@ -19,7 +19,7 @@ export default function ManageProducts() {
     async function fetchProducts() {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:4000/api/products', {
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/products', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -45,7 +45,7 @@ export default function ManageProducts() {
     async function fetchCategories() {
       try {
         const token = localStorage.getItem('token');
-        const res = await fetch('http://localhost:4000/api/categories', {
+        const res = await fetch('https://digital-heaven-store.onrender.com/api/categories', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -123,11 +123,11 @@ export default function ManageProducts() {
         formData.append('img', editingProduct.img);
       }
 
-      let url = 'http://localhost:4000/api/products';
+      let url = 'https://digital-heaven-store.onrender.com/api/products';
       let method: 'POST' | 'PUT' = 'POST';
 
       if (editingProduct.id) {
-        url = `http://localhost:4000/api/products/${editingProduct.id}`;
+        url = `https://digital-heaven-store.onrender.com/api/products/${editingProduct.id}`;
         method = 'PUT';
       }
 
@@ -155,7 +155,7 @@ export default function ManageProducts() {
   const handleDelete = async (productId: string) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:4000/api/products/${productId}`, {
+      const res = await fetch(`https://digital-heaven-store.onrender.com/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -198,7 +198,7 @@ export default function ManageProducts() {
               <tr key={product.id}>
                 <td>
                   <img
-                    src={`http://localhost:4000/uploads/${product.img}`}
+                    src={`https://digital-heaven-store.onrender.com/uploads/${product.img}`}
                     alt=""
                     style={{ width: '50px', height: '50px', objectFit: 'cover' }}
                   />

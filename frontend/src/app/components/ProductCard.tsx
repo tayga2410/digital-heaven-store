@@ -70,7 +70,7 @@ const ProductCard: React.FC<Product> = ({ id, name, price, img, discount = 0 }) 
       dispatch(addItem({ id, name, price: discountedPrice, img }));
       if (token) {
         try {
-          await fetch(`http://localhost:4000/api/wishlist/${id}`, {
+          await fetch(`https://digital-heaven-store.onrender.com/api/wishlist/${id}`, {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${token}`,
