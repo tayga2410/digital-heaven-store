@@ -23,10 +23,14 @@ export const fetchSearchResults = createAsyncThunk<Product[], string, { rejectVa
         throw new Error('Failed to fetch search results');
       }
       const data: Product[] = await response.json();
-      return data.slice(0, 5); // Ограничиваем результаты до 5
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+      return data.slice(0, 5); 
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
+    
   }
 );
 

@@ -66,7 +66,7 @@ export default function ProductsSection() {
               id={product.id}
               img={product.img}
               name={product.name}
-              price={product.price.toFixed(0)}
+              price={Math.round(product.price)}
               discount={product.discount}
             />
           ))}

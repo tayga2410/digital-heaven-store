@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-interface SpecSchema {
-  key: string;
-  type: string;
-}
-
 interface CategoriesState {
   categories: Category[];
   loading: boolean;
@@ -26,8 +21,11 @@ export const fetchCategories = createAsyncThunk<Category[], void>(
       if (!response.ok) throw new Error('Failed to fetch categories');
       const data = await response.json();
       return data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
@@ -61,8 +59,11 @@ export const saveCategory = createAsyncThunk<Category, Category>(
       if (!response.ok) throw new Error('Failed to save category');
       const data = await response.json();
       return data;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
@@ -76,8 +77,12 @@ export const deleteCategory = createAsyncThunk<string, string>(
       });
       if (!response.ok) throw new Error('Failed to delete category');
       return id;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      // Если ошибка не является экземпляром Error, можно вернуть дефолтное сообщение
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );

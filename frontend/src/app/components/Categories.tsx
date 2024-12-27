@@ -5,13 +5,14 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation'; 
 import { useAppDispatch } from '@/store/hooks';
 import { fetchCategories, selectCategories } from '../../store/slices/categoriesSlice';
+import { RootState } from '@/store/store'
 import Image from 'next/image';
 
 export default function Categories() {
   const dispatch = useAppDispatch();
   const router = useRouter(); 
   const categories = useSelector(selectCategories);
-  const { loading, error } = useSelector((state: any) => state.categories);
+  const { loading, error } = useSelector((state: RootState) => state.categories);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -46,7 +47,7 @@ export default function Categories() {
             <Image
               className="categories__image"
               src={`http://localhost:4000/uploads/${category.img}`}
-              alt={category.displayName}
+              alt={category.displayName || 'No image'}
               width={48}
               height={48}
             />

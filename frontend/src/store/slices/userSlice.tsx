@@ -1,6 +1,45 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, thunkAPI) => {
+// Интерфейс параметров для обновления роли пользователя
+interface UpdateUserRoleParams {
+  id: string;
+  role: string;
+}
+
+// Интерфейс ответа от API при обновлении роли пользователя
+interface UpdateUserRoleResponse {
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    createdAt: string;
+  };
+  message: string;
+  success: boolean;
+}
+
+// Интерфейс для пользователя
+interface User {
+  id: string;
+  email: string;
+  role: string;
+  createdAt: string;
+}
+
+// Состояние users
+interface UsersState {
+  users: User[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: UsersState = {
+  users: [],
+  loading: false,
+  error: null,
+};
+
+export const fetchUsers = createAsyncThunk<User[]>('users/fetchUsers', async () => {
   const response = await fetch('http://localhost:4000/api/admin/users', {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   });
@@ -12,9 +51,13 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, thunkAP
   return await response.json();
 });
 
-export const updateUserRole = createAsyncThunk(
+export const updateUserRole = createAsyncThunk<
+  UpdateUserRoleResponse,
+  UpdateUserRoleParams,
+  { rejectValue: string }
+>(
   'users/updateUserRole',
-  async ({ id, role }: { id: string; role: string }, thunkAPI) => {
+  async ({ id, role }: UpdateUserRoleParams) => {
     const response = await fetch(`http://localhost:4000/api/admin/users/${id}/role`, {
       method: 'PATCH',
       headers: {
@@ -32,28 +75,28 @@ export const updateUserRole = createAsyncThunk(
   }
 );
 
-export const deleteUser = createAsyncThunk('users/deleteUser', async (id: string, thunkAPI) => {
-  const response = await fetch(`http://localhost:4000/api/admin/users/${id}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
+export const deleteUser = createAsyncThunk<string, string, { rejectValue: string }>(
+  'users/deleteUser',
+  async (id) => {
+    const response = await fetch(`http://localhost:4000/api/admin/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error('Failed to delete user');
+    if (!response.ok) {
+      throw new Error('Failed to delete user');
+    }
+
+    return id;
   }
+);
 
-  return id;
-});
-
+// Срез (slice) для управления состоянием пользователей
 const userSlice = createSlice({
   name: 'users',
-  initialState: {
-    users: [] as Array<{ id: string; email: string; role: string; createdAt: string }>,
-    loading: false,
-    error: null as string | null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder

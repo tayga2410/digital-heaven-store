@@ -16,8 +16,7 @@ export default function Dashboard() {
           });
     
           if (res.ok) {
-            const data = await res.json();
-            console.log(data);
+            await res.json();
           } else {
             console.error('Failed to fetch data');
           }

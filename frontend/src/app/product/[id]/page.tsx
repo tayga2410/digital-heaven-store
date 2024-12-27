@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Breadcrumbs from '@/app/components/BreadCrumbs';
 import { fetchCategories, selectCategories } from '@/store/slices/categoriesSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { addItemCart } from '@/store/slices/cartSlice';
 import { addItem, removeItem } from '@/store/slices/wishListSlice';
 import { RootState } from '@/store/store';

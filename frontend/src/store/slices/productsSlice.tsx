@@ -23,8 +23,11 @@ export const fetchProducts = createAsyncThunk<Product[], void, { rejectValue: st
         throw new Error('Failed to fetch products');
       }
       return await response.json();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
   }
 );
@@ -38,9 +41,13 @@ export const fetchBestOffers = createAsyncThunk<Product[], void, { rejectValue: 
         throw new Error("Failed to fetch best offers");
       }
       return await response.json();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return rejectWithValue(error.message);
+      }
+      return rejectWithValue('An unknown error occurred');
     }
+    
   }
 );
 
