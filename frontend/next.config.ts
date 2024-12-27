@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost', 
+        protocol: 'https',
+        hostname: 'digital-heaven-store.onrender.com',
         pathname: '/uploads/**', 
       },
     ],
