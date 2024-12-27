@@ -102,6 +102,10 @@
     &__card {
       width: 46%;
       height: unset;
+
+      &:only-child {
+        width: 70%;
+      }
     }
 
     &__card-image {
