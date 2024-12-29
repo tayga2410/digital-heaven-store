@@ -7,19 +7,26 @@ export default function Nav() {
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const closeMenu = () => setIsOpen(false);
+
   return (
     <nav className="nav">
       <div className="nav__burger" onClick={toggleMenu}>
-      <Image src={isOpen ? "/burger-menu-open.svg" : "/burger-menu-closed.svg"} alt={isOpen ? "Close" : "Menu"} width={40} height={40} />
+        <Image 
+          src={isOpen ? "/burger-menu-open.svg" : "/burger-menu-closed.svg"} 
+          alt={isOpen ? "Close" : "Menu"} 
+          width={40} 
+          height={40} 
+        />
       </div>
       <ul className={`nav__list ${isOpen ? 'nav__list--active' : ''}`}>
-        <li className="nav__item">
+        <li className="nav__item" onClick={closeMenu}>
           <Link href="/">На главную</Link>
         </li>
-        <li className="nav__item">
+        <li className="nav__item" onClick={closeMenu}>
           <Link href="/catalog">Каталог</Link>
         </li>
-        <li className="nav__item">
+        <li className="nav__item" onClick={closeMenu}>
           <Link href="/about">О Нас</Link>
         </li>
       </ul>
