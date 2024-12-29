@@ -56,9 +56,9 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header__container">
-      <Link href="/">
-        <span className="header__logo">Digital Heaven</span>
-        </Link>
+      
+        <span className="header__logo"><Link href="/">Digital Heaven</Link></span>
+        
         <button
           className="header__search-icon"
           onClick={() => setIsSearchOpen(!isSearchOpen)}
